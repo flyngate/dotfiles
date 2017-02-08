@@ -1,0 +1,5 @@
+#!/bin/bash
+# Usage: echo hello world | termbin
+# Termbin.com client
+
+nc termbin.com 9999

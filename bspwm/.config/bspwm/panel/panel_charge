@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+# battery widget
+
+n=6
+
+if [[ -n `which acpi 2>/dev/null` ]]; then
+  charge=$(acpi | awk '{ gsub(/%.*/, ""); print $4 }')
+  if [[ $charge > 0 ]]; then
+    p=$[charge * n / 100]
+  else
+    p=0
+  fi
+  echo $(panel_progress $n $p)
+else
+  echo ""
+fi
+

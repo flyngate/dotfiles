@@ -1,0 +1,11 @@
+[user]
+  email = flyngate@gmail.com
+  name = Igor Stroganov
+[alias]
+  aa = add --all
+  ch = checkout
+  co = commit
+  com = commit -m
+  st = status
+[include]
+  path = ~/.gitconfig.local

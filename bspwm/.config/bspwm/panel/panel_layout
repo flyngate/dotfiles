@@ -1,0 +1,9 @@
+#!/bin/sh
+# layout widget
+
+case $(xset -q | grep LED | tail -c 9) in
+  00000*) echo us ;;
+  00001*) echo ru ;;
+  *) echo no ;;
+esac
+

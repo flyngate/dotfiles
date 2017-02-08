@@ -1,0 +1,9 @@
+
+gtk-theme-name = "resonnance"
+gtk-font-name = "Droid Sans 9"
+gtk-icon-theme-name = "hicolor"
+
+#gtk-xft-antialias = 1
+#gtk-xft-hinting = 2
+#gtk-xft-hintstyle = hintslight
+#gtk-xft-rgba = rgb
