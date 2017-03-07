@@ -1,4 +1,0 @@
-if [[ $UID -eq 0 ]]; then
-  alias pacman="sudo pacman"
-fi
-

@@ -1,0 +1,25 @@
+
+setopt prompt_subst
+git_branch() {
+  echo `git symbolic-ref HEAD 2>/dev/null | cut -d / -f 3`
+}
+git_prompt() {
+  branch=`git_branch`
+  if [ "$branch" != "" ]; then
+    echo "%{$fg[blue]%}↑ $(git_branch)%{$reset_color%}"
+  fi
+}
+prompt_hello() {
+  case `whoami` in
+    root ) echo '#' ;;
+    *    ) echo '$' ;;
+  esac
+}
+PROMPT=' $(prompt_hello) '
+rprompt='$(git_prompt) %{$fg[red]%}%~%{$reset_color%}'
+RPROMPT=$rprompt
+TRAPWINCH() {
+  RPROMPT=''
+  sleep 1
+  RPROMPT=$rprompt
+}

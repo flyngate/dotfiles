@@ -1,0 +1,9 @@
+
+* add `bash` package
+* zsh, bash
+  - macports autodiscover
+  - ctrl+left and fn+left for macos
+  - automatically load scripts from .zsh.local directory
+* scripts
+  - text `extract` script
+  - `serve` script

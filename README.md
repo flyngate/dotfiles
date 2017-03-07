@@ -35,3 +35,15 @@ Run one of the following commands on remote machine. This approach creates only 
 *wget*
 
 	$ sh -c "`wget -O - --no-check-certificate https://raw.githubusercontent.com/flyngate/dotfiles/master/install.sh -r [ARGUMENTS]`"
+
+
+Packages
+========
+
+
+### zsh
+
+* Completion
+	- [Docker](https://github.com/docker/docker/blob/master/contrib/completion/zsh/_docker)
+	- [OpenSSL, MacPorts, Fabric, Ansible, PostgreSQL](https://github.com/zsh-users/zsh-completions)
+	- [Django and much more](https://github.com/robbyrussell/oh-my-zsh/tree/master/plugins) repository.

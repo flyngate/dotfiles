@@ -4,8 +4,12 @@
 [alias]
   aa = add --all
   ch = checkout
+  chb = checkout -b
   co = commit
   com = commit -m
+  coa = commit --amend
   st = status
+  subin = submodule init
+  subup = submodule update
 [include]
   path = ~/.gitconfig.local

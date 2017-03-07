@@ -1,0 +1,29 @@
+
+# platform specific `ls` alias
+if [[ $platform == 'linux' ]]; then
+   alias ls='ls --color=auto'
+elif [[ $platform == 'freebsd' || $platform == 'macos' ]]; then
+   alias ls='ls -G'
+fi
+
+# git 'g' alias
+function g {
+  if [[ $# > 0 ]]; then
+    git $@
+  else
+    git status --short --branch
+  fi
+}
+compdef g=git
+
+alias grep="grep --color=auto"
+alias df="df -h"
+alias du="du -h"
+alias la="ls -a"
+alias lla="ls -la"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias django="python manage.py"
+alias journal="journalctl -b"

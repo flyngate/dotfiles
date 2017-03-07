@@ -1,0 +1,11 @@
+#!/bin/bash
+
+
+# samba_share() {
+#   if [[ -n $1 && -n $2 ]]; then
+#     share_path=$(cd $2; pwd)
+#     docker run -it --rm -p 139:139 -p 445:445 -v $share_path:/share dperson/samba -s "$1;/share"
+#   else
+#     echo error
+#   fi
+# }

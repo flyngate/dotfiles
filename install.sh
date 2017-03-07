@@ -5,10 +5,8 @@ default_recipe="default.recipe"
 
 self_name=$(basename $0)
 current_dir=$(cd $(dirname $BASH_SOURCE[0]); pwd)
-home_dir="$current_dir/_home"  # $HOME
-backup_dir="$current_dir/_dotfiles_backup"
-
-mkdir -p "$home_dir"  # TODO: remove
+home_dir=$HOME
+backup_dir="$home_dir/dotfiles_backup"
 
 packages=()
 flag_copy=false
