@@ -23,7 +23,7 @@ zstyle ':completion:*' menu select
 stty -ixon
 
 ### prompt
-source "$HOME/.zsh.d/prompt"
+source "$HOME/.zsh.d/prompts/prompt2"
 
 ### aliases
 source "$HOME/.zsh.d/aliases"
