@@ -104,5 +104,5 @@ __prompt_branch_name() {
 
 __prompt_branch_dirty() {
 	local st="$(command git status --porcelain --ignore-submodules -unormal)"
-	[[ -z $st ]] && echo "" || echo "*"
+	[[ -z $st ]] && echo " " || echo "*"
 }

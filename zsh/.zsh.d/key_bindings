@@ -1,22 +1,33 @@
 
-bindkey "^[[2~" overwrite-mode       # insert
-bindkey "^[[3~" delete-char          # delete
-bindkey "^[[3$" delete-char          # delete
-bindkey "^[[1~" beginning-of-line    # home (console)
-bindkey "^[[H~" beginning-of-line    # home (xorg)
-bindkey "^[[7~" beginning-of-line    # home (xorg also)
-bindkey "^[[7$" beginning-of-line    # home + shift (xorg)
-bindkey "^[[4~" end-of-line          # end (console)
-bindkey "^[[F~" end-of-line          # end (xorg)
-bindkey "^[[8~" end-of-line          # end (xorg also)
-bindkey "^[[8$" end-of-line          # end + shift (xorg)
-bindkey "^[[5~" up-line-or-history   # page up
-bindkey "^[[6~" down-line-or-history # page down
-bindkey "^[[c"  forward-char         # right + shift (xorg)
-bindkey "^[[d"  backward-char        # left + shift (xorg)
-bindkey "^[Od"  emacs-backward-word  # ctrl + left
-bindkey "5D"    emacs-backward-word  # ctrl + left
-bindkey "^[Oc"  emacs-forward-word   # ctrl + right
-bindkey "5C"    emacs-forward-word   # ctrl + right
+bindkey "^[[2~"  overwrite-mode       # insert
+bindkey "^[[3~"  delete-char          # delete
+bindkey "^[[3$"  delete-char          # delete
+bindkey "^[[1~"  beginning-of-line    # home (console)
+bindkey "^[[H~"  beginning-of-line    # home (xorg)
+bindkey "^[[7~"  beginning-of-line    # home (xorg also)
+bindkey "^[[7$"  beginning-of-line    # home + shift (xorg)
+bindkey "^[[H"   beginning-of-line    # home (mac os)
+bindkey "^[[4~"  end-of-line          # end (console)
+bindkey "^[[F~"  end-of-line          # end (xorg)
+bindkey "^[[8~"  end-of-line          # end (xorg also)
+bindkey "^[[8$"  end-of-line          # end + shift (xorg)
+bindkey "^[[F"   end-of-line          # end (mac os)
+bindkey "^[[5~"  up-line-or-history   # page up
+bindkey "^[[6~"  down-line-or-history # page down
+bindkey "^[[c"   forward-char         # right + shift (xorg)
+bindkey "^[[d"   backward-char        # left + shift (xorg)
+bindkey "^[Od"   emacs-backward-word  # ctrl + left
+bindkey "5D"     emacs-backward-word  # ctrl + left
+bindkey "^[^[[D" emacs-backward-word  # alt + left (mac os, iterm)
+bindkey "^[b"    emacs-backward-word  # alt + left (mac os, terminal)
+bindkey "^[Oc"   emacs-forward-word   # ctrl + right
+bindkey "5C"     emacs-forward-word   # ctrl + right
+bindkey "^[^[[C" emacs-forward-word   # alt + right (mac os, iterm)
+bindkey "^[f"    emacs-forward-word   # alt + right (mac os, terminal)
+
+
+
+
+
 
 export WORDCHARS=''
