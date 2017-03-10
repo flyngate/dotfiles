@@ -6,7 +6,7 @@ default_recipe="default.recipe"
 self_name=$(basename $0)
 current_dir=$(cd $(dirname $BASH_SOURCE[0]); pwd)
 home_dir=$HOME
-backup_dir="$home_dir/dotfiles_backup"
+backup_dir="$home_dir/.dotfiles_backup"
 
 packages=()
 flag_copy=false
