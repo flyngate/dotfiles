@@ -1,11 +1,21 @@
 #!/bin/bash
 
+http_server() {
+  python -m SimpleHTTPServer $1
+}
 
-# samba_share() {
-#   if [[ -n $1 && -n $2 ]]; then
-#     share_path=$(cd $2; pwd)
-#     docker run -it --rm -p 139:139 -p 445:445 -v $share_path:/share dperson/samba -s "$1;/share"
-#   else
-#     echo error
-#   fi
-# }
+samba_server() {
+  target=$(cd ${1-.}; pwd)
+  echo $target
+  docker run -it -p 137-139:137-139 -p 445:445 --rm -v "$target":/shared --name samba pwntr/samba-alpine
+}
+
+case "$1" in
+  http )
+    http_server $2 ;;
+  samba )
+    samba_server $2 ;;
+  * )
+    echo -e "usage: serve http <port>\n       serve samba" ;;
+esac
+
