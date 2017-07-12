@@ -41,11 +41,11 @@ source $__zsh_key_bindings
 
 ### functions
 __zsh__init_functions() {
-	local name
-	fpath=($__zsh_functions $fpath)
-	for name in $(ls $__zsh_functions); do
-		autoload $name
-	done
+  local name
+  fpath=($__zsh_functions $fpath)
+  for name in $(ls $__zsh_functions); do
+    autoload $name
+  done
 }
 __zsh__init_functions
 
@@ -53,7 +53,7 @@ __zsh__init_functions
 source "$HOME/.zsh.d/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 BASE16_SHELL="$HOME/.zsh.d/plugins/base16-shell"
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && { eval "$($BASE16_SHELL/profile_helper.sh)" } 
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && { eval "$($BASE16_SHELL/profile_helper.sh)" }
 
 ### import all scripts from .zshrc.local
 if [ -d "$__zsh_local" ]; then

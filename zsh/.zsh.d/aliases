@@ -16,6 +16,7 @@ function g {
 }
 compdef g=git
 
+alias c="docker-compose"
 alias grep="grep --color=auto"
 alias df="df -h"
 alias du="du -h"
@@ -26,4 +27,4 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias django="python manage.py"
-alias journal="journalctl -b"
+
