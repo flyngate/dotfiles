@@ -19,14 +19,16 @@ bindkey "^[[6~"   down-line-or-history # page down
 bindkey "^[[c"    forward-char         # right + shift (xorg)
 bindkey "^[[d"    backward-char        # left + shift (xorg)
 bindkey "^[Od"    emacs-backward-word  # ctrl + left
+# bindkey "^[OD"    emacs-backward-word  # ctrl + left (tmux)
 bindkey "5D"      emacs-backward-word  # ctrl + left
 bindkey "^A"      emacs-backward-word  # ctrl + left (linux, hyper)
-bindkey "^[^[[D"  emacs-backward-word  # alt + left (mac os, iterm)
+# bindkey "^[^[[D"  emacs-backward-word  # alt + left (mac os, iterm)
 bindkey "^[b"     emacs-backward-word  # alt + left (mac os, terminal)
 bindkey "^[Oc"    emacs-forward-word   # ctrl + right
+# bindkey "^[OC"    emacs-forward-word   # ctrl + right (tmux)
 bindkey "5C"      emacs-forward-word   # ctrl + right
 bindkey "^E"      emacs-forward-word   # ctrl + right (linux, hyper)
-bindkey "^[^[[C"  emacs-forward-word   # alt + right (mac os, iterm)
+# bindkey "^[^[[C"  emacs-forward-word   # alt + right (mac os, iterm)
 bindkey "^[f"     emacs-forward-word   # alt + right (mac os, terminal)
 
 export WORDCHARS=''
