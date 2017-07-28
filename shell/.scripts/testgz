@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -eu
+
+if [[ -e "$1" ]]; then
+  size_kb=$(du -k "$1" | cut -f1)
+  gzipped=$(gzip -c "$1" | wc -c)
+  gzipped_kb=$(echo "scale=2; $gzipped / 1024" | bc)
+  echo "$size_kb kb => $gzipped_kb kb"
+else
+  test -z "$1" && echo "no file" || echo "file doesn't exist"
+  exit 1
+fi
+

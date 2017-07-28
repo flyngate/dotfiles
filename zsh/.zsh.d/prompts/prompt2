@@ -15,31 +15,32 @@ __prompt_resized=""
 
 setopt prompt_subst
 
-PROMPT=' $__HELLO_PRE$(__prompt_hello)$__HELLO_POST$(__prompt_is_reset_needed) '
+PROMPT=' $(__prompt_ssh)$__HELLO_PRE$(__prompt_hello)$__HELLO_POST$(__prompt_is_reset_needed) '
 RPROMPT='$(__prompt_git_or_cwd)'
 
 # runs on window resize
 TRAPWINCH() {
-	__prompt_resized=true
+  __prompt_resized=true
   RPROMPT=$RPROMPT
 }
 
-# reset if the window is narrower than after the last reset
+# reset if the window is narrower than it was
+# after the last reset
 # check before every command execution
 precmd() {
-	if [[ -n $(__prompt_is_reset_needed) ]]; then
-		__prompt_resized=""
-		__prompt_last_col=$COLUMNS
-		reset
-	fi
+  if [[ -n $(__prompt_is_reset_needed) ]]; then
+    __prompt_resized=""
+    __prompt_last_col=$COLUMNS
+    reset
+  fi
 }
 
 __prompt_is_reset_needed() {
-	if [[ -n "$__prompt_resized" ]]; then
-		if [[ "$__prompt_last_col" -gt $COLUMNS ]]; then
-		  echo " %F{black}%B(reset)%b%f"
-		fi
-	fi
+  if [[ -n "$__prompt_resized" ]]; then
+    if [[ "$__prompt_last_col" -gt $COLUMNS ]]; then
+      echo " %F{black}%B(reset)%b%f"
+    fi
+  fi
 }
 
 __prompt_hello() {
@@ -49,60 +50,76 @@ __prompt_hello() {
   esac
 }
 
+__prompt_ssh() {
+  local ssh=false
+
+  if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+    ssh=true
+  else
+    case $(ps -o comm= -p $PPID) in
+      sshd|*/sshd) ssh=true ;;
+    esac
+  fi
+
+  if [[ "$ssh" == true ]]; then
+    echo "($(whoami)@$(hostname)) "
+  fi
+}
+
 __prompt_git_or_cwd() {
-	local prompt="$(__prompt_git)"
-	if [[ -z "$prompt" ]]; then
-		prompt="$__CWD_PRE$(__prompt_cwd)$__CWD_POST"
-	fi
-	echo "$prompt"
+  local prompt="$(__prompt_git)"
+  if [[ -z "$prompt" ]]; then
+    prompt="$__CWD_PRE$(__prompt_cwd)$__CWD_POST"
+  fi
+  echo "$prompt"
 }
 
 __prompt_cwd() {
-	local curdir iterdir inner outer
+  local curdir iterdir inner outer
 
-	curdir="$(pwd)"
+  curdir="$(pwd)"
 
-	if [[ "$curdir" == "$HOME"* ]]; then
-		curdir="~${curdir:${#HOME}}"
-	fi
+  if [[ "$curdir" == "$HOME"* ]]; then
+    curdir="~${curdir:${#HOME}}"
+  fi
 
-	if [[ ${#curdir} -gt 25 ]]; then
-		iterdir="$curdir"
-		inner=$(basename $iterdir)
-		while [[ ${#iterdir} > 1 ]]; do
-			outer=$iterdir
-			iterdir="$(dirname $iterdir)"
-		done
-		if [[ "$outer/$inner" != "$curdir" ]]; then
-			curdir="$outer/.../$inner"
-		fi
-	fi
+  if [[ ${#curdir} -gt 25 ]]; then
+    iterdir="$curdir"
+    inner=$(basename $iterdir)
+    while [[ ${#iterdir} > 1 ]]; do
+      outer=$iterdir
+      iterdir="$(dirname $iterdir)"
+    done
+    if [[ "$outer/$inner" != "$curdir" ]]; then
+      curdir="$outer/.../$inner"
+    fi
+  fi
 
-	echo $curdir
+  echo $curdir
 }
 
 __prompt_git() {
-	if type git >/dev/null 2>&1 && __prompt_is_repository; then
-		local branch="$(__prompt_branch_name)"
-		local repo="$(__prompt_repository)"
-		local dirty="$(__prompt_branch_dirty)"
-		echo "$__REPO_PRE$repo$__REPO_POST $__BRANCH_PRE⇡ $branch$dirty$__BRANCH_POST"
-	fi
+  if type git >/dev/null 2>&1 && __prompt_is_repository; then
+    local branch="$(__prompt_branch_name)"
+    local repo="$(__prompt_repository)"
+    local dirty="$(__prompt_branch_dirty)"
+    echo "$__REPO_PRE$repo$__REPO_POST $__BRANCH_PRE⇡ $branch$dirty$__BRANCH_POST"
+  fi
 }
 
 __prompt_is_repository() {
-	git rev-parse --git-dir > /dev/null 2>&1;
+  git rev-parse --git-dir > /dev/null 2>&1;
 }
 
 __prompt_repository() {
-	echo $(basename $(git rev-parse --show-toplevel))
+  echo $(basename $(git rev-parse --show-toplevel))
 }
 
 __prompt_branch_name() {
-	echo $(git symbolic-ref HEAD 2>/dev/null | cut -d / -f 3)
+  echo $(git symbolic-ref HEAD 2>/dev/null | cut -d / -f 3)
 }
 
 __prompt_branch_dirty() {
-	local st="$(command git status --porcelain --ignore-submodules -unormal)"
-	[[ -z $st ]] && echo " " || echo "*"
+  local st="$(command git status --porcelain --ignore-submodules -unormal)"
+  [[ -z $st ]] && echo " " || echo "*"
 }
