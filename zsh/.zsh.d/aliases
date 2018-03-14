@@ -16,6 +16,11 @@ function g {
 }
 compdef g=git
 
+# make directory and change into it
+function mcd {
+  mkdir -p "$1" && cd "$1";
+}
+
 alias c="docker-compose"
 alias grep="grep --color=auto"
 alias df="df -h"
