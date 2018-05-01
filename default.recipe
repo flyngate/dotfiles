@@ -1,2 +1,1 @@
-
-PACKAGES=(zsh vim git tmux)
+PACKAGES=(zsh shell vim git tmux)
