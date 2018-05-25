@@ -1,0 +1,73 @@
+{
+	// Place your snippets for javascript here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+
+	"ES import": {
+		"prefix": "imp",
+		"body": [
+			"import $2 from '$1';"
+		],
+		"description": "ES import"
+	},
+	"impreact": {
+		"prefix": "impreact",
+		"body": [
+			"import React from 'react';"
+		],
+		"description": "ES import"
+	},
+	"impconnect": {
+		"prefix": "impconnect",
+		"body": [
+			"import { connect } from 'react-redux';"
+		],
+		"description": "ES import"
+	},
+	"impcompose": {
+		"prefix": "impcompose",
+		"body": [
+			"import { compose } from 'redux';"
+		],
+		"description": "ES import"
+	},
+	"statelesscomponent": {
+		"prefix": "statelesscomponent",
+		"body": [
+			"import React from 'react';",
+			"import { compose } from 'redux';",
+			"import { connect } from 'react-redux';",
+			"import styled from 'styled-components';",
+			"import { path, pick } from 'ramda';",
+			"",
+			"import { actions, selectors } from 'store/$2';",
+			"",
+			"const connector = connect(",
+			"  (state) => ({",
+			"    $3",
+			"  }),",
+			"  {}",
+			");",
+			"",
+			"const $1 = () => {",
+			"  return (",
+			"    <div/>",
+			"  );",
+			"};",
+			"",
+			"export default connector($1);",
+			"",
+		],
+		"description": "Stateless component template"
+	}
+}

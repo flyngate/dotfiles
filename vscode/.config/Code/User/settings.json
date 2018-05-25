@@ -1,0 +1,17 @@
+{
+    "workbench.colorTheme": "Visual Studio Light",
+    "code-runner.executorMap": {
+        "javascript": "babel-node",
+        "python": "python3",
+        "perl": "perl",
+        "go": "go run",
+        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+    },
+    "eslint.packageManager": "yarn",
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "flow.useNPMPackagedFlow": true,
+    "javascript.validate.enable": false,
+    "typescript.validate.enable": false,
+    "javascript.nameSuggestions": false,
+}
