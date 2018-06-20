@@ -23,6 +23,13 @@
     },
     "emmet.triggerExpansionOnTab": true,
 
+    "[javascript]": {
+        "editor.formatOnSave": true
+    },
+    "prettier.eslintIntegration": true,
+    "prettier.trailingComma": "all",
+    "prettier.singleQuote": true,
+
     "code-runner.executorMap": {
       "javascript": "babel-node",
       "python": "python3",

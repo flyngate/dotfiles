@@ -44,6 +44,7 @@
 	"statelesscomponent": {
 		"prefix": "statelesscomponent",
 		"body": [
+			"// @flow",
 			"import React from 'react';",
 			"import { compose } from 'redux';",
 			"import { connect } from 'react-redux';",
@@ -68,6 +69,38 @@
 			"export default connector($1);",
 			"",
 		],
-		"description": "Stateless component template"
+		"description": "Stateless react component"
+	},
+	"classcomponent": {
+		"prefix": "classcomponent",
+		"body": [
+			"// @flow",
+			"import React from 'react';",
+			"import { compose } from 'redux';",
+			"import { connect } from 'react-redux';",
+			"import styled from 'styled-components';",
+			"import { path, pick } from 'ramda';",
+			"",
+			"import { actions, selectors } from 'store/$2';",
+			"",
+			"const connector = connect(",
+			"  (state) => ({",
+			"    $3",
+			"  }),",
+			"  {}",
+			");",
+			"",
+			"class $1 extends React.Component {",
+			"  render() {",
+			"    return (",
+			"      <div></div>",
+			"    );",
+			"  }",
+			"}",
+			"",
+			"export default connector($1);",
+			"",
+		],
+		"description": "Class-based react component",
 	}
 }
