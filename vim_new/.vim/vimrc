@@ -1,3 +1,4 @@
+" basic setup
 filetype plugin indent on          " filetype detection and settings
 syntax on                          " syntax highlighting
 silent! runtime macros/matchit.vim " matchit comes with Vim
@@ -12,8 +13,25 @@ set tags=./tags;/,tags;/           " search tags files efficiently
 set wildmenu                       " better command line completion, shows a list of matches
 nnoremap gb :buffers<CR>:sb<Space> " quick buffer navigation
 
+" make a habbit to navigate using hjkl
 noremap <Up> <NOP>
 noremap <Down> <NOP>
 noremap <Left> <NOP>
 noremap <Right> <NOP>
+
+" aliases for navigating the buffers
+nnoremap <silent> [b :bprevious<CR>
+nnoremap <silent> ]b :bnext<CR>
+nnoremap <silent> [B :bfirst<CR>
+nnoremap <silent> ]B :blast<CR>
+
+" press both k and j to exit insert mode
+inoremap jk <esc>
+inoremap kj <esc>
+
+" search recursively
+set path+=**
+
+" put all swap files into a single directory
+set directory^=$HOME/.vim/swap//
 
