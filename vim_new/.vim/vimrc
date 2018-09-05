@@ -1,4 +1,5 @@
-" basic setup
+""" BASIC SETUP
+
 filetype plugin indent on          " filetype detection and settings
 syntax on                          " syntax highlighting
 silent! runtime macros/matchit.vim " matchit comes with Vim
@@ -19,6 +20,16 @@ noremap <Down> <NOP>
 noremap <Left> <NOP>
 noremap <Right> <NOP>
 
+" show line numbers
+set number
+
+" indentation
+set expandtab
+set tabstop=2
+set shiftwidth=2
+autocmd FileType vim setlocal expandtab shiftwidth=2 softtabstop=2
+autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2
+
 " aliases for navigating the buffers
 nnoremap <silent> [b :bprevious<CR>
 nnoremap <silent> ]b :bnext<CR>
@@ -29,9 +40,69 @@ nnoremap <silent> ]B :blast<CR>
 inoremap jk <esc>
 inoremap kj <esc>
 
-" search recursively
-set path+=**
+" change path var, affects gf, :find etc.
+" ** is added to search recursively
+set path=.,$HOME/.vim,**
+
+" set suffixesadd to follow js imports with gf 
+set suffixesadd=.js,.jsx
 
 " put all swap files into a single directory
 set directory^=$HOME/.vim/swap//
+
+" config for netrw filebrowser
+let g:netrw_banner=0
+let g:netrw_altv=1
+let g:netrw_liststyle=3
+
+
+""" ALIASES
+
+" set %% as an alias for the directory of the current file
+cabbr <expr> %% expand('%:p:h')
+
+
+""" SNIPPETS
+
+" nnoremap ,html :-1read $HOME/.vim/.skeleton.html<CR>3jwf>a
+
+
+""" PLUGINS
+
+call plug#begin('~/.vim/plugins')
+Plug 'nightsense/snow'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+call plug#end()
+
+
+""" GVIM/MACVIM
+
+if has('gui_running')
+  " hide toolbar in gvim
+  set guioptions-=T
+  set guifont=Monaco\ 10.5
+
+  " colors
+  " theme: https://github.com/nightsense/snow
+  if strftime('%H') >= 7 && strftime('%H') < 19
+    set background=light
+  else
+    set background=dark
+  endif
+
+  colorscheme snow
+
+  if !exists('g:vim_initialized')
+    set lines=100 columns=120
+  endif
+endif
+
+
+" include vimrc.local if exists for system-specific setup
+silent! source $HOME/.vim/vimrc.local
+
+" use this variable to avoid applying settings twice when
+" reloading vimrc with :so ~/.vim/vimrc
+let g:vim_initialized = 1
 
