@@ -44,6 +44,14 @@ inoremap kj <esc>
 " ** is added to search recursively
 set path=.,$HOME/.vim,**
 
+" exclude node_module from search
+set wildignore+=**/node_modules/**
+
+" ignore case when searching the file
+" uppercase symbols make the search case sensitive
+set ignorecase
+set smartcase
+
 " set suffixesadd to follow js imports with gf 
 set suffixesadd=.js,.jsx
 
@@ -53,10 +61,22 @@ set directory^=$HOME/.vim/swap//
 " config for netrw filebrowser
 let g:netrw_banner=0
 let g:netrw_altv=1
-let g:netrw_liststyle=3
+" let g:netrw_liststyle=3
 
+" automatically reload buffer if the file has changed
+" and the buffer has no changes unsaved
+set autoread
+
+" split windows config
+set splitright
+set splitbelow
 
 """ ALIASES
+
+" set leader to ,
+let mapleader = ','
+
+nnoremap <leader>f :find *
 
 " set %% as an alias for the directory of the current file
 cabbr <expr> %% expand('%:p:h')
@@ -70,9 +90,11 @@ cabbr <expr> %% expand('%:p:h')
 """ PLUGINS
 
 call plug#begin('~/.vim/plugins')
+Plug 'skywind3000/asyncrun.vim'
 Plug 'nightsense/snow'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
+Plug 'w0rp/ale'
 call plug#end()
 
 
@@ -80,7 +102,8 @@ call plug#end()
 
 if has('gui_running')
   " hide toolbar in gvim
-  set guioptions-=T
+  " set guioptions-=T
+  set guioptions=c
   set guifont=Monaco\ 10.5
 
   " colors
