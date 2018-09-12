@@ -12,7 +12,8 @@ set ruler                          " shows line number in the status line
 set switchbuf=useopen,usetab       " better behavior for the quickfix window and :sb
 set tags=./tags;/,tags;/           " search tags files efficiently
 set wildmenu                       " better command line completion, shows a list of matches
-nnoremap gb :buffers<CR>:sb<Space> " quick buffer navigation
+" quick buffer navigation
+nnoremap gb :buffers<CR>:sb<Space>
 
 " make a habbit to navigate using hjkl
 noremap <Up> <NOP>
@@ -47,16 +48,38 @@ set path=.,$HOME/.vim,**
 " exclude node_module from search
 set wildignore+=**/node_modules/**
 
+" set suffixesadd to follow js imports with gf
+set suffixesadd=.js,.jsx
+
+" put all swap files into a single directory
+set directory^=$HOME/.vim/swap//
+
+" highlight search
+" set hlsearch
+
+" map leader+space to clear out search highlight
+nnoremap <leader><space> :noh<cr>
+
 " ignore case when searching the file
 " uppercase symbols make the search case sensitive
 set ignorecase
 set smartcase
 
-" set suffixesadd to follow js imports with gf 
-set suffixesadd=.js,.jsx
+" enable "very magic" regex mode everywhere
+" :help /magic
+nnoremap / /\v
+vnoremap / /\v
+cnoremap %s/ %smagic/
+cnoremap \>s/ \>smagic/
+" nnoremap :g/ :g/\v
+" nnoremap :g// :g//
 
-" put all swap files into a single directory
-set directory^=$HOME/.vim/swap//
+" global substitution by default
+" i.e. :s/a/b works as :s/a/b/g
+set gdefault
+
+" when a bracket is inserted, briefly jump to the matching one
+set showmatch
 
 " config for netrw filebrowser
 let g:netrw_banner=0
@@ -71,6 +94,7 @@ set autoread
 set splitright
 set splitbelow
 
+
 """ ALIASES
 
 " set leader to ,
@@ -81,6 +105,22 @@ nnoremap <leader>f :find *
 " set %% as an alias for the directory of the current file
 cabbr <expr> %% expand('%:p:h')
 
+" map tab to % in normal and visual mode
+nnoremap <tab> %
+vnoremap <tab> %
+
+" map leader+w to vertical split
+nnoremap <leader>w <C-w>v<C-w>l
+
+" C-hjkl for window navigation
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" mapping for ack
+nnoremap <leader>a :Ack
+
 
 """ SNIPPETS
 
@@ -90,12 +130,31 @@ cabbr <expr> %% expand('%:p:h')
 """ PLUGINS
 
 call plug#begin('~/.vim/plugins')
-Plug 'skywind3000/asyncrun.vim'
+
+" color schemes
 Plug 'nightsense/snow'
+Plug 'phanviet/sidonia'
+Plug 'iceisspetrel/monrovia'
+
+Plug 'mileszs/ack.vim'
+Plug 'skywind3000/asyncrun.vim'
+" Plug 'w0rp/ale'
+
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-Plug 'w0rp/ale'
+
 call plug#end()
+
+" ale setup
+" let g:ale_sign_error = '●' " Less aggressive than the default '>>'
+" let g:ale_sign_warning = '.'
+" let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
+" let g:ale_completion_enabled = 1 " Enable completion where available.
+
+" use ag if available
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 
 """ GVIM/MACVIM
@@ -104,17 +163,27 @@ if has('gui_running')
   " hide toolbar in gvim
   " set guioptions-=T
   set guioptions=c
-  set guifont=Monaco\ 10.5
 
-  " colors
-  " theme: https://github.com/nightsense/snow
+  " show a colored column at 80 characters
+  set colorcolumn=80
+
+  " font type and size setting.
+  if has('win32')
+    " set guifont=Consolas:h12
+  elseif has('gui_macvim')
+    set guifont=Source\ Code\ Pro\ Semibold:h14
+  else
+    set guifont=Monaco\ 12
+  endif
+
+  " colors scheme
   if strftime('%H') >= 7 && strftime('%H') < 19
     set background=light
   else
     set background=dark
   endif
 
-  colorscheme snow
+  colorscheme monrovia
 
   if !exists('g:vim_initialized')
     set lines=100 columns=120
