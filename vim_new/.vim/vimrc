@@ -58,7 +58,7 @@ set directory^=$HOME/.vim/swap//
 " set hlsearch
 
 " map leader+space to clear out search highlight
-nnoremap <leader><space> :noh<cr>
+" nnoremap <leader><space> :noh<cr>
 
 " ignore case when searching the file
 " uppercase symbols make the search case sensitive
@@ -67,10 +67,10 @@ set smartcase
 
 " enable "very magic" regex mode everywhere
 " :help /magic
-nnoremap / /\v
-vnoremap / /\v
-cnoremap %s/ %smagic/
-cnoremap \>s/ \>smagic/
+" nnoremap / /\v
+" vnoremap / /\v
+" cnoremap %s/ %smagic/
+" cnoremap \>s/ \>smagic/
 " nnoremap :g/ :g/\v
 " nnoremap :g// :g//
 
@@ -95,19 +95,18 @@ set splitright
 set splitbelow
 
 
-""" ALIASES
+""" MAPPINGS/ALIASES
 
 " set leader to ,
 let mapleader = ','
 
-nnoremap <leader>f :find *
-
-" set %% as an alias for the directory of the current file
-cabbr <expr> %% expand('%:p:h')
+" map reverse t and f repeat to \
+nnoremap \ ,
 
 " map tab to % in normal and visual mode
-nnoremap <tab> %
-vnoremap <tab> %
+" TODO this break C-i somehow
+" nnoremap <tab> %
+" vnoremap <tab> %
 
 " map leader+w to vertical split
 nnoremap <leader>w <C-w>v<C-w>l
@@ -118,8 +117,29 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
+nnoremap <leader>f :find<space>
+
 " mapping for ack
-nnoremap <leader>a :Ack
+cnoreabbrev Ack Ack!
+nnoremap <leader>a :Ack!<space>
+
+" set %% as an alias for the directory of the current file
+cabbr <expr> %% expand('%:p:h')
+
+" update config
+nnoremap <leader>cu :update<cr>:so ~/.vim/vimrc<cr>
+
+" update plugins
+nnoremap <leader>pu :update<cr>:so ~/.vim/vimrc<cr>:PlugUpdate<cr>
+
+" mnemonic: Copy File path
+nnoremap <leader>cf :let @*=expand("%:p")<cr>
+
+" mnemonic: Yank File path
+nnoremap <leader>yf :let @"=expand("%:p")<cr>
+
+" mnemonic: yank File Name
+nnoremap <leader>fn :let @"=expand("%")<cr>
 
 
 """ SNIPPETS
@@ -137,11 +157,13 @@ Plug 'phanviet/sidonia'
 Plug 'iceisspetrel/monrovia'
 
 Plug 'mileszs/ack.vim'
+Plug 'scrooloose/nerdtree'
 Plug 'skywind3000/asyncrun.vim'
 " Plug 'w0rp/ale'
 
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
+" Plug 'flowtype/vim-flow'
 
 call plug#end()
 
@@ -156,6 +178,11 @@ if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
+" vim-javascript setups
+let g:javascript_plugin_flow = 1
+
+" TODO
+let g:jsx_ext_required = 0
 
 """ GVIM/MACVIM
 
@@ -167,26 +194,26 @@ if has('gui_running')
   " show a colored column at 80 characters
   set colorcolumn=80
 
-  " font type and size setting.
-  if has('win32')
-    " set guifont=Consolas:h12
-  elseif has('gui_macvim')
-    set guifont=Source\ Code\ Pro\ Semibold:h14
-  else
-    set guifont=Monaco\ 12
-  endif
-
-  " colors scheme
-  if strftime('%H') >= 7 && strftime('%H') < 19
-    set background=light
-  else
-    set background=dark
-  endif
-
-  colorscheme monrovia
 
   if !exists('g:vim_initialized')
-    set lines=100 columns=120
+     set lines=100 columns=120
+
+     " font type and size setting.
+     if has('win32')
+       " set guifont=Consolas:h12
+     elseif has('gui_macvim')
+       set guifont=Source\ Code\ Pro\ Semibold:h14
+       colorscheme monrovia
+     else
+       " set guifont=Monaco\ 12
+       set guifont=Source\ Code\ Pro\ Semibold\ 11
+       if strftime('%H') >= 7 && strftime('%H') < 19
+         set background=light
+       else
+         set background=dark
+       endif
+       colorscheme snow
+     endif
   endif
 endif
 
@@ -196,5 +223,5 @@ silent! source $HOME/.vim/vimrc.local
 
 " use this variable to avoid applying settings twice when
 " reloading vimrc with :so ~/.vim/vimrc
-let g:vim_initialized = 1
+ let g:vim_initialized = 1
 
