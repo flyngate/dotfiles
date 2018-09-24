@@ -1,14 +1,45 @@
+[core]
+  excludesfile = ~/.gitignore.global
+
 [user]
   name = Igor Stroganov
+
 [alias]
   aa = add --all
+  ai = add --interactive
+
+  b = branch
+  bls = branch -v # list branches with last commit in
+  brm = branch -d
+  brmf = branch -D
+  bmv = branch -m
+
   ch = checkout
   chb = checkout -b
+
   co = commit
   com = commit -m
   coa = commit --amend
+
+  cherrypick = cherry-pick
+  cp = cherry-pick
+
   st = status
+
   subin = submodule init
   subup = submodule update
+
+[push]
+  # push easily: http://stackoverflow.com/a/23918418/89484
+  default = current
+  followTags = true
+
+[pager]
+  diff = ~/.gitconfig.d/diff-so-fancy/diff-so-fancy | less --tabs=4 -RFX
+  show = ~/.gitconfig.d/diff-so-fancy/diff-so-fancy | less --tabs=4 -RFX
+
+[interactive]
+  diffFilter = "~/.gitconfig.d/diff-so-fancy/diff-so-fancy"
+
 [include]
   path = ~/.gitconfig.local
