@@ -157,7 +157,7 @@ Plug 'phanviet/sidonia'
 Plug 'iceisspetrel/monrovia'
 
 Plug 'mileszs/ack.vim'
-Plug 'scrooloose/nerdtree'
+" Plug 'scrooloose/nerdtree'
 Plug 'skywind3000/asyncrun.vim'
 " Plug 'w0rp/ale'
 

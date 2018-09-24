@@ -1,0 +1,18 @@
+#!/bin/bash
+# Usage:
+#  ssh_tunnel user@host [port]
+#
+# Port is 1080 by default.
+#
+# -D: Tells SSH that we want a SOCKS tunnel on the specified port number (you can choose a number between 1025-65536)
+# -C: Compresses the data before sending it
+# -q: Uses quiet mode
+# -N: Tells SSH that no command will be sent once the tunnel is up
+
+if [[ -z "$1" ]]; then
+  echo "error: user@host is missing"
+  exit 1
+fi
+
+ssh -D ${2:-1080} -C -q -N $1
+
