@@ -155,7 +155,10 @@ call plug#begin('~/.vim/plugins')
 Plug 'nightsense/snow'
 Plug 'phanviet/sidonia'
 Plug 'iceisspetrel/monrovia'
+Plug 'chriskempson/base16-vim'
 
+Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.vim/bin/fzf' }
+Plug 'junegunn/fzf.vim'
 Plug 'mileszs/ack.vim'
 " Plug 'scrooloose/nerdtree'
 Plug 'skywind3000/asyncrun.vim'
@@ -173,7 +176,11 @@ call plug#end()
 " let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
 " let g:ale_completion_enabled = 1 " Enable completion where available.
 
-" use ag if available
+" fzf setup
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+nnoremap <c-p> :FZF<cr>
+
+" use ag for ack search if available
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
@@ -205,14 +212,13 @@ if has('gui_running')
        set guifont=Source\ Code\ Pro\ Semibold:h14
        colorscheme monrovia
      else
-       " set guifont=Monaco\ 12
-       set guifont=Source\ Code\ Pro\ Semibold\ 11
+       set guifont=Menlo\ 10.5
        if strftime('%H') >= 7 && strftime('%H') < 19
          set background=light
        else
          set background=dark
        endif
-       colorscheme snow
+       colorscheme base16-tomorrow
      endif
   endif
 endif
