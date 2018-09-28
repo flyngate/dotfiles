@@ -141,6 +141,9 @@ nnoremap <leader>yf :let @"=expand("%:p")<cr>
 " mnemonic: yank File Name
 nnoremap <leader>fn :let @"=expand("%")<cr>
 
+" git blame
+nnoremap <leader>bl :exe "!git blame -L " . line(".") . "," . line(".") . " " . expand("%:p")<cr>
+vnoremap <leader>bl :<c-u>exe "!git blame -L " . line("'<") . "," . line("'>") . " " . expand("%:p")<cr>
 
 """ SNIPPETS
 
@@ -218,7 +221,7 @@ if has('gui_running')
        else
          set background=dark
        endif
-       colorscheme base16-tomorrow
+       colorscheme base16-atelier-cave-light
      endif
   endif
 endif
