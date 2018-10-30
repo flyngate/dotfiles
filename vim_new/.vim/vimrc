@@ -129,6 +129,9 @@ nnoremap <leader>f :find<space>
 cnoreabbrev Ack Ack!
 nnoremap <leader>a :Ack!<space>
 
+" shortcut for :Explore
+command! E Explore
+
 " set %% as an alias for the directory of the current file
 cabbr <expr> %% expand('%:p:h')
 
@@ -166,24 +169,36 @@ Plug 'phanviet/sidonia'
 Plug 'iceisspetrel/monrovia'
 Plug 'chriskempson/base16-vim'
 
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'mattn/emmet-vim'
 Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.vim/bin/fzf' }
 Plug 'junegunn/fzf.vim'
 Plug 'mileszs/ack.vim'
-" Plug 'scrooloose/nerdtree'
-Plug 'skywind3000/asyncrun.vim'
-" Plug 'w0rp/ale'
 
+" Plug 'scrooloose/nerdtree'
+Plug 'w0rp/ale'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 " Plug 'flowtype/vim-flow'
 
+Plug 'ElmCast/elm-vim'
+
 call plug#end()
 
 " ale setup
-" let g:ale_sign_error = '●' " Less aggressive than the default '>>'
-" let g:ale_sign_warning = '.'
-" let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
-" let g:ale_completion_enabled = 1 " Enable completion where available.
+let g:ale_fixers = {
+\   'javascript': ['prettier-eslint'],
+\   'css': ['prettier-eslint'],
+\}
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\}
+let g:ale_sign_error = '●' " Less aggressive than the default '>>'
+let g:ale_sign_warning = '.'
+let g:ale_fix_on_save = 1
+let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
+let g:ale_completion_enabled = 1 " Enable completion where available.
 
 " fzf setup
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
@@ -238,5 +253,5 @@ silent! source $HOME/.vim/vimrc.local
 
 " use this variable to avoid applying settings twice when
 " reloading vimrc with :so ~/.vim/vimrc
- let g:vim_initialized = 1
+let g:vim_initialized = 1
 
