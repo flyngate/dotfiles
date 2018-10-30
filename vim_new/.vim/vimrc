@@ -117,17 +117,11 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" C-j/k deletes blank line below/above, and A-j/k inserts.
-nnoremap <silent><C-j> m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
-nnoremap <silent><C-k> m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
-nnoremap <silent><A-j> :set paste<CR>m`o<Esc>``:set nopaste<CR>
-nnoremap <silent><A-k> :set paste<CR>m`O<Esc>``:set nopaste<CR>
-
 nnoremap <leader>f :find<space>
 
 " mapping for ack
 cnoreabbrev Ack Ack!
-nnoremap <leader>a :Ack!<space>
+nnoremap <leader>a :Ack! -w -Q<space>
 
 " shortcut for :Explore
 command! E Explore
@@ -171,6 +165,8 @@ Plug 'chriskempson/base16-vim'
 
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-commentary'
 Plug 'mattn/emmet-vim'
 Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.vim/bin/fzf' }
 Plug 'junegunn/fzf.vim'
@@ -185,6 +181,10 @@ Plug 'mxw/vim-jsx'
 Plug 'ElmCast/elm-vim'
 
 call plug#end()
+
+" vim-surround setup
+" custom surround for jsx comments
+autocmd FileType javascript.jsx let b:surround_45 = "{/* \r */}"
 
 " ale setup
 let g:ale_fixers = {
