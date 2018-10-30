@@ -201,6 +201,10 @@ let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
 let g:ale_javascript_prettier_eslint_options = '--single-quote --trailing-comma=all'
 let g:ale_completion_enabled = 1 " Enable completion where available.
 
+" mappings for jumping between linter errors
+nmap <silent> [a <Plug>(ale_previous_wrap)
+nmap <silent> ]a <Plug>(ale_next_wrap)
+
 " fzf setup
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 nnoremap <c-p> :FZF<cr>
