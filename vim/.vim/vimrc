@@ -100,6 +100,16 @@ set splitbelow
 
 """ MAPPINGS/ALIASES
 
+" makes it easy to run a macro over multiple lines
+function! ExecuteMacroOverVisualRange()
+  echo "@".getcmdline()
+  execute ":'<,'>normal @".nr2char(getchar())
+endfunction
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
+
+inoremap <C-l><C-u> <C-o>:normal mzgUiw`z<cr>
+nnoremap <C-l><C-u> mzgUiw`z
+
 " set leader to ,
 let mapleader = ','
 
@@ -137,10 +147,10 @@ command! E Explore
 cabbr <expr> %% expand('%:p:h')
 
 " update config
-nnoremap <leader>cu :update<cr>:so ~/.vim/vimrc<cr>
+nnoremap <leader>uc :update<cr>:so ~/.vim/vimrc<cr>
 
 " update plugins
-nnoremap <leader>pu :update<cr>:so ~/.vim/vimrc<cr>:PlugUpdate<cr>
+nnoremap <leader>up :update<cr>:so ~/.vim/vimrc<cr>:PlugUpdate<cr>
 
 " mnemonic: Copy File path
 nnoremap <leader>cf :let @*=expand("%:p")<cr>
@@ -170,10 +180,15 @@ Plug 'phanviet/sidonia'
 Plug 'iceisspetrel/monrovia'
 Plug 'chriskempson/base16-vim'
 
+Plug 'itchyny/lightline.vim'
+Plug 'scrooloose/nerdtree'
+
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-abolish'
+Plug 'terryma/vim-multiple-cursors'
 Plug 'mattn/emmet-vim'
 Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.vim/bin/fzf' }
 Plug 'junegunn/fzf.vim'
@@ -205,6 +220,17 @@ let g:LanguageClient_serverCommands = {
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
+" nerdtree setup
+function! ToggleNERDTree()
+  if &filetype == 'nerdtree'
+    :NERDTreeToggle
+  else
+    :NERDTreeFind
+  endif
+endfunction
+
+nnoremap <C-\> :call s:toggleNERDTree()<cr>
 
 " ale setup
 let g:ale_fixers = {
@@ -259,7 +285,8 @@ if has('gui_running')
        " set guifont=Consolas:h12
      elseif has('gui_macvim')
        set guifont=Source\ Code\ Pro\ Semibold:h14
-       colorscheme monrovia
+       " colorscheme monrovia
+       colorscheme base16-darktooth
      else
        set guifont=Menlo\ 10.5
        if strftime('%H') >= 7 && strftime('%H') < 19
@@ -272,6 +299,13 @@ if has('gui_running')
   endif
 endif
 
+" fixes colors in terminal
+if !has('gui_running')
+  set t_Co=256
+endif
+
+" don't show mode since we have lightline
+set noshowmode
 
 " include vimrc.local if exists for system-specific setup
 silent! source $HOME/.vim/vimrc.local
