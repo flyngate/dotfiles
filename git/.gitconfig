@@ -8,7 +8,7 @@
   aa = add --all
   ai = add --interactive
 
-  b = branch
+  b = "!git branch --sort=-committerdate | head -n 20"
   bls = branch -v # list branches with last commit in
   brm = branch -d
   brmf = branch -D
