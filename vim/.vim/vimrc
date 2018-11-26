@@ -100,6 +100,16 @@ set splitbelow
 
 """ MAPPINGS/ALIASES
 
+" */# searches current selection in visual mode
+function! s:VSetSearch(cmdtype)
+  let temp = @s
+  norm! gv"sy
+  let @/ = '\V' . substitute(escape(@s, a:cmdtype.'\'), '\n', '\\n', 'g')
+  let @s = temp
+endfunction
+xnoremap * :<C-u>call <SID>VSetSearch('/')<CR>/<C-R>=@/<CR><CR>
+xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
+
 " makes it easy to run a macro over multiple lines
 function! ExecuteMacroOverVisualRange()
   echo "@".getcmdline()
@@ -273,7 +283,6 @@ if has('gui_running')
 
   " show a colored column at 80 characters
   set colorcolumn=80
-
 
   if !exists('g:vim_initialized')
      set lines=100 columns=120
