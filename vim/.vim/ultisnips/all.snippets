@@ -1,0 +1,123 @@
+snippet log
+console.log($1);
+endsnippet
+
+snippet try
+try {
+  $0
+} catch (error) {
+  
+}
+endsnippet
+
+snippet imp
+import $1 from '$2';
+endsnippet
+
+snippet impstyled
+import styled from 'styled-components';
+endsnippet
+
+snippet lib2
+import $1 from 'components/lib2/$1';
+endsnippet
+
+snippet styled
+const $1 = styled.$2\`$0
+\`;
+
+endsnippet
+
+snippet tgen
+Generator<*, *, *>
+endsnippet
+
+snippet newcomp
+// @flow
+import React from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+
+import type { ExtractReturn } from 'flowTypes/common';
+
+const Wrapper = styled.div\`\`;
+
+const mapStateToProps = (state: *): * => ({
+});
+
+const mapDispatchToProps = {
+};
+
+const connector = connect(
+  mapStateToProps,
+	mapDispatchToProps,
+);
+
+type Props = ExtractReturn<typeof mapStateToProps> & typeof mapDispatchToProps;
+
+const $1 = ({}: Props) => {
+  return (
+	  <Wrapper>
+		</Wrapper>
+	);
+};
+
+export default connector($1);
+endsnippet
+
+snippet comp
+const $1 = ({
+}: Props) => {
+  return ($0);
+};
+endsnippet
+
+snippet classcomp
+class $1 extends React.Component<*, *> {
+	render() {
+		return ($0);
+	}
+}
+endsnippet
+
+snippet test
+$1
+${1/([A-Z][a-z]+)/\U$1\E_/g}
+endsnippet
+
+snippet aa
+export type $2RequestAction = {
+	type: typeof types.${2/([A-Z][a-z]+)/\U$1\E_/g}REQUEST,
+	payload: { $3 },
+};
+export type $2SuccessAction = {
+	type: typeof types.${2/([A-Z][a-z]+)/\U$1\E_/g}SUCCESS,
+	payload: { $4 },
+};
+export type $2ErrorAction = {
+	type: typeof types.${2/([A-Z][a-z]+)/\U$1\E_/g}ERROR,
+	payload: { $5 },
+};
+export const $1 = {
+	request: (payload: *): $2RequestAction => ({
+		type: types.${2/([A-Z][a-z]+)/\U$1\E_/g}REQUEST,
+		payload,
+	}),
+	success: (payload: *): $2SuccessAction => ({
+		type: types.${2/([A-Z][a-z]+)/\U$1\E_/g}SUCCESS,
+		payload,
+	}),
+	error: (payload: *): $2ErrorAction => ({
+		type: types.${2/([A-Z][a-z]+)/\U$1\E_/g}ERROR,
+		payload,
+	}),
+};
+$2RequestAction
+$2SuccessAction
+$2ErrorAction
+types.${2/([A-Z][a-z]+)/\U$1\E_/g}REQUEST,
+types.${2/([A-Z][a-z]+)/\U$1\E_/g}SUCCESS,
+types.${2/([A-Z][a-z]+)/\U$1\E_/g}ERROR,
+$0
+endsnippet
+

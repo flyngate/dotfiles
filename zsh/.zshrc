@@ -61,3 +61,5 @@ if [ -d "$__zsh_local" ]; then
     source "$__zsh_local/$file"
   done
 fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

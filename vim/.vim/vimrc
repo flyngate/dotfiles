@@ -110,6 +110,8 @@ endfunction
 xnoremap * :<C-u>call <SID>VSetSearch('/')<CR>/<C-R>=@/<CR><CR>
 xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
 
+command ClearSwap !rm ~/.vim/swap/*
+
 " makes it easy to run a macro over multiple lines
 function! ExecuteMacroOverVisualRange()
   echo "@".getcmdline()
@@ -139,6 +141,12 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+
+" bubble lines / visual selections up and down
+nmap <c-up> [e==
+nmap <c-down> ]e==
+vmap <c-up> [egv=gv
+vmap <c-down> ]egv=gv
 
 nnoremap <leader>f :find<space>
 
@@ -195,6 +203,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-abolish'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'Raimondi/delimitMate'
 Plug 'mattn/emmet-vim'
 Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.vim/bin/fzf' }
 Plug 'junegunn/fzf.vim'
@@ -204,6 +213,7 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
+Plug 'SirVer/ultisnips'
 
 Plug 'othree/xml.vim'
 Plug 'w0rp/ale'
@@ -219,11 +229,15 @@ call plug#end()
 " custom surround for jsx comments
 autocmd FileType javascript.jsx let b:surround_45 = "{/* \r */}"
 
+" delimitMate
+let delimitMate_expand_cr = 1
+
 " language server protocol setup
 let g:LanguageClient_serverCommands = {
   \ 'javascript': ['./node_modules/.bin/flow', 'lsp'],
   \ 'javascript.jsx': ['./node_modules/.bin/flow', 'lsp'],
   \ }
+let g:LanguageClient_hoverPreview = 'Always'
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
@@ -254,6 +268,7 @@ let g:ale_fix_on_save = 1
 let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
 let g:ale_javascript_prettier_eslint_options = '--single-quote --trailing-comma=all'
 let g:ale_completion_enabled = 1 " Enable completion where available.
+let g:ale_sign_column_always = 1
 
 " move between linting errors
 nmap <silent> [r :ALEPreviousWrap<cr>
@@ -273,6 +288,13 @@ let g:javascript_plugin_flow = 1
 
 " TODO
 let g:jsx_ext_required = 0
+
+" ultisnip
+let g:UltiSnipsSnippetDirectories=['UltiSnips', 'ultisnips']
+let g:UltiSnipsExpandTrigger='<tab>'
+let g:UltiSnipsJumpForwardTrigger='<tab>'
+let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
+
 
 """ GVIM/MACVIM
 
