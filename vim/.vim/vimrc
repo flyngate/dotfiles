@@ -209,6 +209,14 @@ Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.vim/bin/fzf' }
 Plug 'junegunn/fzf.vim'
 Plug 'mileszs/ack.vim'
 
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
@@ -241,6 +249,9 @@ let g:LanguageClient_hoverPreview = 'Always'
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
+" deoplete setup
+let g:deoplete#enable_at_startup = 1
 
 " nerdtree setup
 function! ToggleNERDTree()
