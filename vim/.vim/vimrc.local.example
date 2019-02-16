@@ -1,0 +1,8 @@
+command Project source ~/code/project/project.vim
+
+" set guifont=Menlo\ 10.5  # linux format
+" set guifont=Source\ Code\ Pro\ Semibold:h14  # mac os format
+
+set guifont=Source\ Code\ Pro\ Semibold:h14
+colorscheme base16-hopscotch
+
