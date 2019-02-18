@@ -137,7 +137,7 @@ command! E Explore
 " uppercase the word under the cursor
 inoremap <C-l><C-u> <esc>:<c-u>normal mzgUiw`z<cr>a
 
-command ClearSwap !rm ~/.vim/swap/*
+command! ClearSwap !rm ~/.vim/swap/*
 
 " set leader to ,
 let mapleader = "\<space>"
@@ -150,11 +150,21 @@ let mapleader = "\<space>"
 " map leader+w to vertical split
 nnoremap <leader>w <C-w>v<C-w>l
 
+" new tab
+nnoremap <leader>t :<c-u>tabnew<cr>
+
 " find alias
 nnoremap <leader>f :find<space>
 
 " ag alias
 nnoremap <leader>a :Ag<space>
+
+nnoremap <leader>a :Ag<space>
+nnoremap <leader>sg :GFiles<cr>
+nnoremap <leader>sG :GFiles?<cr>
+nnoremap <leader>st :Tags<cr>
+nnoremap <leader>sT :BTags<cr>
+nnoremap <leader>sc :Colors<cr>
 
 " update config
 nnoremap <leader>uc :update<cr>:so ~/.vim/vimrc<cr>
@@ -176,7 +186,7 @@ nnoremap <leader>fn :let @"=expand("%")<cr>
 
 call plug#begin('~/.vim/plugins')
 
-" color schemes
+" visual
 Plug 'nightsense/snow'
 Plug 'phanviet/sidonia'
 Plug 'iceisspetrel/monrovia'
@@ -189,17 +199,24 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-fugitive'
+
 Plug 'Raimondi/delimitMate'
+Plug 'kana/vim-textobj-user'
+Plug 'fvictorio/vim-textobj-backticks'
+Plug 'Julian/vim-textobj-variable-segment'
 
 Plug 'SirVer/ultisnips'
+Plug 'ludovicchabant/vim-gutentags'
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+" if has('nvim')
+"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" else
+"   Plug 'Shougo/deoplete.nvim'
+"   Plug 'roxma/nvim-yarp'
+"   Plug 'roxma/vim-hug-neovim-rpc'
+" endif
+" Plug 'ervandew/supertab'
 
 Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.vim/bin/fzf' }
 Plug 'junegunn/fzf.vim'
@@ -217,6 +234,12 @@ call plug#end()
 " vim-surround setup
 " custom surround for jsx comments
 autocmd FileType javascript.jsx let b:surround_45 = "{/* \r */}"
+
+" vim-textobj-backticks: make ii` the default behavior
+omap i` if`
+xmap i` if`
+omap a` af`
+xmap a` af`
 
 " delimitMate
 let delimitMate_expand_cr = 1
@@ -262,6 +285,9 @@ let g:UltiSnipsExpandTrigger='<tab>'
 let g:UltiSnipsJumpForwardTrigger='<tab>'
 let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
 
+" gutentags setup
+let g:gutentags_enabled = 0
+
 
 """ GVIM/MACVIM
 
@@ -284,7 +310,7 @@ if !has('gui_running')
 endif
 
 " include vimrc.local if exists for system-specific setup
-silent! source $HOME/.vim/vimrc.local
+source $HOME/.vim/vimrc.local
 
 " use this variable to avoid applying settings twice when
 " reloading vimrc with :so ~/.vim/vimrc
