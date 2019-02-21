@@ -21,7 +21,7 @@ function mcd {
   mkdir -p "$1" && cd "$1";
 }
 
-alias c="docker-compose"
+alias s="sudo"
 alias grep="grep --color=auto"
 alias df="df -h"
 alias du="du -h"
@@ -32,4 +32,5 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias django="python manage.py"
+alias c="docker-compose"
 
