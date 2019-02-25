@@ -1,4 +1,4 @@
-
+""""""""""""""""""""""""""""""""
 "
 " PACKAGE MANAGEMENT
 "
@@ -19,7 +19,9 @@ Plug 'fvictorio/vim-textobj-backticks'
 Plug 'Julian/vim-textobj-variable-segment'
 
 " visual
+Plug 'ap/vim-css-color'
 Plug 'junegunn/goyo.vim'
+Plug 'junegunn/vim-emoji'
 Plug 'itchyny/lightline.vim'
 Plug 'nightsense/snow'
 Plug 'phanviet/sidonia'
@@ -27,6 +29,7 @@ Plug 'iceisspetrel/monrovia'
 Plug 'chriskempson/base16-vim'
 
 " search
+Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.vim/bin/fzf' }
 Plug 'junegunn/fzf.vim'
 
@@ -46,7 +49,7 @@ Plug 'w0rp/ale'
 "   Plug 'roxma/vim-hug-neovim-rpc'
 " endif
 " Plug 'ervandew/supertab'
-Plug 'Valloric/YouCompleteMe'
+" Plug 'Valloric/YouCompleteMe'
 
 " snippets
 Plug 'SirVer/ultisnips'
@@ -91,6 +94,7 @@ set tags=./tags;/,tags;/           " search tags files efficiently
 set wildmenu                       " better command line completion, shows a list of matches
 set noerrorbells                   " no beeps
 set showcmd                        " show me what I'm typing
+set nohlsearch
 set mouse=a
 
 " show line numbers
@@ -205,6 +209,9 @@ cabbr <expr> %% expand('%:p:h')
 " visual reselect of just pasted
 nnoremap gp `[v`]
 
+" search for default register content
+nnoremap g" /\v<<C-r>"><CR>
+
 " shortcut for :Explore
 command! E Explore
 
@@ -246,7 +253,7 @@ nnoremap <leader>t :VimuxPromptCommand<cr>true<cr>
 nnoremap <leader>T :VimuxCloseRunner<cr>
 
 " zen mode
-nnoremap <leader>z :Goyo
+nnoremap <leader>z :Goyo<cr>
 
 " update config
 nnoremap <leader>uc :update<cr>:so ~/.vim/vimrc<cr>
@@ -255,13 +262,13 @@ nnoremap <leader>uc :update<cr>:so ~/.vim/vimrc<cr>
 nnoremap <leader>up :update<cr>:so ~/.vim/vimrc<cr>:PlugUpdate<cr>
 
 " mnemonic: Copy File path
-nnoremap <leader>cf :let @+=expand("%:p")<cr>
+" nnoremap <leader>cf :let @+=expand("%:p")<cr>
 
 " mnemonic: Yank File path
-nnoremap <leader>yf :let @"=expand("%:p")<cr>
+" nnoremap <leader>yf :let @"=expand("%:p")<cr>
 
 " mnemonic: yank File Name
-nnoremap <leader>fn :let @"=expand("%")<cr>
+" nnoremap <leader>fn :let @"=expand("%")<cr>
 
 
 """"""""""""""""""""""""""""""""
@@ -336,12 +343,22 @@ let g:jsx_ext_required = 0
 """ MARKDOWN
 let g:vim_markdown_folding_disabled = 1
 
+augroup emoji_complete
+  autocmd!
+  autocmd FileType markdown setlocal completefunc=emoji#complete
+augroup END
 
 """"""""""""""""""""""""""""""""
 "
 " OTHER PLUGINS
 "
 """"""""""""""""""""""""""""""""
+
+" lightline
+let g:lightline = {
+  \ 'separator': { 'left': '▓▒░', 'right': '░▒▓' },
+  \ 'subseparator': { 'left': '>', 'right': '' },
+  \}
 
 " vim-textobj-backticks: make ii` the default behavior
 omap i` if`
@@ -351,6 +368,11 @@ xmap a` af`
 
 " delimitMate
 let delimitMate_expand_cr = 1
+
+" ack.vim
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 " fzf
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
@@ -389,9 +411,12 @@ endif
 
 " fixes colors in terminal
 if !has('gui_running')
-  set t_Co=256
+  " set t_Co=256
 endif
 
+if has('termguicolors')
+  set termguicolors
+endif
 
 """"""""""""""""""""""""""""""""
 "
