@@ -393,7 +393,7 @@ let g:gutentags_ctags_exclude = ['node_modules', 'dist', '.git', '*.json', '*.md
 
 """"""""""""""""""""""""""""""""
 "
-" GUI
+" GUI and colors
 "
 """"""""""""""""""""""""""""""""
 
@@ -411,13 +411,12 @@ if has('gui_running')
 endif
 
 " fixes colors in terminal
-if !has('gui_running')
-  " set t_Co=256
-endif
-
-if has('nvim')
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   set termguicolors
 endif
+
 
 """"""""""""""""""""""""""""""""
 "
