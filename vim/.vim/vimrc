@@ -13,6 +13,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-vinegar'
 Plug 'Raimondi/delimitMate'
 Plug 'kana/vim-textobj-user'
 Plug 'fvictorio/vim-textobj-backticks'
@@ -49,7 +50,7 @@ Plug 'w0rp/ale'
 "   Plug 'roxma/vim-hug-neovim-rpc'
 " endif
 " Plug 'ervandew/supertab'
-" Plug 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe'
 
 " snippets
 Plug 'SirVer/ultisnips'
@@ -59,10 +60,18 @@ Plug 'SirVer/ultisnips'
 " Plug 'mxw/vim-jsx'
 Plug 'mattn/emmet-vim'
 Plug 'othree/xml.vim'
-Plug 'neoclide/vim-jsx-improve'
+" Plug 'neoclide/vim-jsx-improve'
+Plug 'othree/yajs.vim'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 Plug 'ElmCast/elm-vim'
+
+" css
+Plug 'hail2u/vim-css3-syntax'
+" Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+
+" python
+Plug 'bps/vim-textobj-python'
 
 " file types
 Plug 'plasticboy/vim-markdown'
@@ -111,17 +120,28 @@ set shiftwidth=2
 autocmd FileType vim setlocal expandtab shiftwidth=2 softtabstop=2
 autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2
 
+" when editing a file, always jump to the last known cursor position.
+" don't do it for commit messages, when the position is invalid, or when
+" inside an event handler (happens when dropping a file on gvim)
+augroup vimrcEx
+  autocmd!
+  autocmd BufReadPost *
+    \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+augroup END
+
 " make a habbit to navigate using hjkl
-noremap <Up> <NOP>
-noremap <Down> <NOP>
-noremap <Left> <NOP>
-noremap <Right> <NOP>
+noremap <Up> <nop>
+noremap <Down> <nop>
+noremap <Left> <nop>
+noremap <Right> <nop>
 
 " aliases for navigating the buffers
-nnoremap <silent> [b :bprevious<CR>
-nnoremap <silent> ]b :bnext<CR>
-nnoremap <silent> [B :bfirst<CR>
-nnoremap <silent> ]B :blast<CR>
+nnoremap <silent> [b :bprevious<cr>
+nnoremap <silent> ]b :bnext<cr>
+nnoremap <silent> [B :bfirst<cr>
+nnoremap <silent> ]B :blast<cr>
 
 " change path var, affects gf, :find etc.
 " ** is added to search recursively
@@ -157,8 +177,8 @@ set splitright
 set splitbelow
 
 " Keep search matches in the middle of the window.
-nnoremap n nzzzv
-nnoremap N Nzzzv
+" nnoremap n nzzzv
+" nnoremap N Nzzzv
 
 " */# searches current selection in visual mode
 function! s:VSetSearch(cmdtype)
@@ -191,11 +211,12 @@ map <D-8> 8gt
 map <D-9> 9gt
 map <D-0> :tablast<CR>
 
+" NOTE: this is disabled because vim-tmux-navigator provides the same functionality
 " C-hjkl for window navigation
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+" nnoremap <C-h> <C-w>h
+" nnoremap <C-j> <C-w>j
+" nnoremap <C-k> <C-w>k
+" nnoremap <C-l> <C-w>l
 
 " bubble lines / visual selections up and down
 nmap <c-up> [e==
@@ -249,8 +270,11 @@ nnoremap <leader>r :VimuxPromptCommand<cr>
 nnoremap <leader>R :VimuxRunLastCommand<cr>
 nnoremap <leader>i :VimuxInspectRunner<cr>
 nnoremap <leader>I :VimuxZoomRunner<cr>
-nnoremap <leader>t :VimuxPromptCommand<cr>true<cr>
 nnoremap <leader>T :VimuxCloseRunner<cr>
+
+augroup vimuxjest
+  autocmd FileType javascript nnoremap <leader>t :VimuxPromptCommand<cr>yarn jest <c-r>=expand('%:p')<cr><cr>
+augroup END
 
 " zen mode
 nnoremap <leader>z :Goyo<cr>
@@ -269,6 +293,20 @@ nnoremap <leader>up :update<cr>:so ~/.vim/vimrc<cr>:PlugUpdate<cr>
 
 " mnemonic: yank File Name
 " nnoremap <leader>fn :let @"=expand("%")<cr>
+
+""""""""""""""""""""""""""""""""
+"
+" SEARCH
+"
+""""""""""""""""""""""""""""""""
+
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor
+  command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+  nnoremap \ :Ag -Q<space>
+else
+  echoe 'Install "ag" for sane :Ag command search'
+endif
 
 
 """"""""""""""""""""""""""""""""
@@ -299,6 +337,19 @@ let g:ale_lint_on_text_changed = 'never'
 nmap <silent> [r :ALEPreviousWrap<cr>
 nmap <silent> ]r :ALENextWrap<cr>
 
+" ALE linting events
+augroup ale
+  autocmd!
+
+  autocmd VimEnter *
+    \ set updatetime=1000 |
+    \ let g:ale_lint_on_text_changed = 0
+  autocmd CursorHold * call ale#Queue(0)
+  autocmd CursorHoldI * call ale#Queue(0)
+  autocmd InsertEnter * call ale#Queue(0)
+  autocmd InsertLeave * call ale#Queue(0)
+augroup END
+
 
 """"""""""""""""""""""""""""""""
 "
@@ -314,6 +365,20 @@ nmap <silent> ]r :ALENextWrap<cr>
 "   \ '_': ['buffer', 'omni'],
 "   \})
 
+" tab completion
+" will insert tab at beginning of line,
+" will use completion if not at beginning
+set wildmode=list:longest,list:full
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<Tab>"
+    else
+        return "\<C-p>"
+    endif
+endfunction
+inoremap <Tab> <C-r>=InsertTabWrapper()<CR>
+inoremap <S-Tab> <C-n>
 
 
 """"""""""""""""""""""""""""""""
@@ -328,11 +393,8 @@ nmap <silent> ]r :ALENextWrap<cr>
 " let g:javascript_plugin_flow = 1
 
 augroup js
-  au!
-
-  " custom surround for jsx comments
+  autocmd!
   autocmd FileType javascript let b:surround_45 = "{/* \r */}"
-
   autocmd FileType javascript nmap <buffer> <c-]> :YcmCompleter GoTo<cr>
 augroup END
 
@@ -379,9 +441,9 @@ endif
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 nnoremap <c-p> :FZF<cr>
 
-" ultisnip
+" ultisnips
 let g:UltiSnipsSnippetDirectories=['UltiSnips', 'ultisnips']
-let g:UltiSnipsExpandTrigger='<tab>'
+let g:UltiSnipsExpandTrigger='<c-a>'
 let g:UltiSnipsJumpForwardTrigger='<tab>'
 let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
 
@@ -432,6 +494,9 @@ augroup END
 
 " make C-a, C-x work properly
 set nrformats=
+
+" fix esc in terminal mode when using zsh
+tnoremap <esc> <c-\><c-n>
 
 
 """"""""""""""""""""""""""""""""

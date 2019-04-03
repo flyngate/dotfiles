@@ -18,6 +18,13 @@ snippet impstyled
 import styled from 'styled-components';
 endsnippet
 
+snippet antd
+import { $1 } from 'antd';
+endsnippet
+
+snippet ramda
+import { $1 } from 'ramda';
+
 snippet lib2
 import $1 from 'components/lib2/$1';
 endsnippet
@@ -85,6 +92,15 @@ $1
 ${1/([A-Z][a-z]+)/\U$1\E_/g}
 endsnippet
 
+snippet saga
+function* $1($2) {
+	try {
+	  $0
+	} catch (error) {
+	}
+}
+endsnippet
+
 snippet aa
 export type $2RequestAction = {
 	type: typeof types.${2/([A-Z][a-z]+)/\U$1\E_/g}REQUEST,
@@ -118,6 +134,27 @@ $2ErrorAction
 types.${2/([A-Z][a-z]+)/\U$1\E_/g}REQUEST,
 types.${2/([A-Z][a-z]+)/\U$1\E_/g}SUCCESS,
 types.${2/([A-Z][a-z]+)/\U$1\E_/g}ERROR,
+$0
+endsnippet
+
+snippet a3
+export const $1 = {
+	request: (payload) => ({
+		type: types.${1/([A-Z]?[a-z]+)(?=[A-Z]|$)/\U$1\E_/g}REQUEST,
+		payload,
+	}),
+	success: (payload) => ({
+		type: types.${1/([A-Z]?[a-z]+)(?=[A-Z]|$)/\U$1\E_/g}SUCCESS,
+		payload,
+	}),
+	error: (payload) => ({
+		type: types.${1/([A-Z]?[a-z]+)(?=[A-Z]|$)/\U$1\E_/g}ERROR,
+		payload,
+	}),
+};
+types.${1/([A-Z]?[a-z]+)(?=[A-Z]|$)/\U$1\E_/g}REQUEST,
+types.${1/([A-Z]?[a-z]+)(?=[A-Z]|$)/\U$1\E_/g}SUCCESS,
+types.${1/([A-Z]?[a-z]+)(?=[A-Z]|$)/\U$1\E_/g}ERROR,
 $0
 endsnippet
 

@@ -34,5 +34,8 @@ bindkey "^[f"     emacs-forward-word   # alt + right (mac os, terminal)
 bindkey "^[[1;5D" emacs-backward-word  # ctrl + left
 bindkey "^[[1;5C" emacs-forward-word   # ctrl + right
 
+bindkey "^P" up-line-or-search
+bindkey "^N" down-line-or-search
+
 export WORDCHARS=''
 
