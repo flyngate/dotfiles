@@ -14,7 +14,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
-Plug 'Raimondi/delimitMate'
+Plug 'cohama/lexima.vim'
 Plug 'kana/vim-textobj-user'
 Plug 'fvictorio/vim-textobj-backticks'
 Plug 'Julian/vim-textobj-variable-segment'
@@ -49,11 +49,13 @@ Plug 'w0rp/ale'
 "   Plug 'roxma/nvim-yarp'
 "   Plug 'roxma/vim-hug-neovim-rpc'
 " endif
-" Plug 'ervandew/supertab'
 Plug 'Valloric/YouCompleteMe'
 
 " snippets
 Plug 'SirVer/ultisnips'
+
+" vimscript
+" TODO
 
 " javascript
 " Plug 'pangloss/vim-javascript'
@@ -63,7 +65,6 @@ Plug 'othree/xml.vim'
 " Plug 'neoclide/vim-jsx-improve'
 Plug 'othree/yajs.vim'
 Plug 'HerringtonDarkholme/yats.vim'
-Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 Plug 'ElmCast/elm-vim'
 
 " css
@@ -79,8 +80,6 @@ Plug 'chr4/nginx.vim'
 
 " tmux integration
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'benmills/vimux'
-Plug 'tyewang/vimux-jest-test'
 
 call plug#end()
 
@@ -118,24 +117,23 @@ set expandtab
 set tabstop=2
 set shiftwidth=2
 autocmd FileType vim setlocal expandtab shiftwidth=2 softtabstop=2
-autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2
 
 " when editing a file, always jump to the last known cursor position.
 " don't do it for commit messages, when the position is invalid, or when
 " inside an event handler (happens when dropping a file on gvim)
-augroup vimrcEx
+augroup remember_position
   autocmd!
   autocmd BufReadPost *
     \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
+    \   execute "normal g`\"" |
     \ endif
 augroup END
 
 " make a habbit to navigate using hjkl
-noremap <Up> <nop>
-noremap <Down> <nop>
-noremap <Left> <nop>
-noremap <Right> <nop>
+noremap <up> <nop>
+noremap <down> <nop>
+noremap <left> <nop>
+noremap <right> <nop>
 
 " aliases for navigating the buffers
 nnoremap <silent> [b :bprevious<cr>
@@ -265,17 +263,6 @@ nnoremap <leader>st :Tags<cr>
 nnoremap <leader>sT :BTags<cr>
 nnoremap <leader>sc :Colors<cr>
 
-" vimux
-nnoremap <leader>r :VimuxPromptCommand<cr>
-nnoremap <leader>R :VimuxRunLastCommand<cr>
-nnoremap <leader>i :VimuxInspectRunner<cr>
-nnoremap <leader>I :VimuxZoomRunner<cr>
-nnoremap <leader>T :VimuxCloseRunner<cr>
-
-augroup vimuxjest
-  autocmd FileType javascript nnoremap <leader>t :VimuxPromptCommand<cr>yarn jest <c-r>=expand('%:p')<cr><cr>
-augroup END
-
 " zen mode
 nnoremap <leader>z :Goyo<cr>
 
@@ -391,13 +378,14 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 "
 """"""""""""""""""""""""""""""""
 
-""" JS
+""" JS / JavaScript
 
 " vim-javascript setups
 " let g:javascript_plugin_flow = 1
 
 augroup js
   autocmd!
+  autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2
   autocmd FileType javascript let b:surround_45 = "{/* \r */}"
   autocmd FileType javascript nmap <buffer> <c-]> :YcmCompleter GoTo<cr>
 augroup END
@@ -414,6 +402,7 @@ augroup emoji_complete
   autocmd!
   autocmd FileType markdown setlocal completefunc=emoji#complete
 augroup END
+
 
 """"""""""""""""""""""""""""""""
 "
@@ -514,6 +503,10 @@ augroup qfbottom
   autocmd!
   autocmd FileType qf wincmd J
 augroup END
+
+" vimscript autocompletion ends up broken at this point somehow...
+" remap the keystroke to itself to fix it
+imap <c-x><c-v> <c-x><c-v>
 
 """"""""""""""""""""""""""""""""
 "
