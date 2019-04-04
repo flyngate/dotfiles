@@ -302,7 +302,7 @@ nnoremap <leader>up :update<cr>:so ~/.vim/vimrc<cr>:PlugUpdate<cr>
 
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
-  command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+  command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
   nnoremap \ :Ag -Q<space>
 else
   echoe 'Install "ag" for sane :Ag command search'
@@ -379,6 +379,10 @@ function! InsertTabWrapper()
 endfunction
 inoremap <Tab> <C-r>=InsertTabWrapper()<CR>
 inoremap <S-Tab> <C-n>
+
+let g:ycm_max_num_candidates = 10
+let g:ycm_max_num_identifier_candidates = 5
+let g:ycm_autoclose_preview_window_after_completion = 1
 
 
 """"""""""""""""""""""""""""""""
