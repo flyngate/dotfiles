@@ -495,9 +495,21 @@ augroup END
 " make C-a, C-x work properly
 set nrformats=
 
-" fix esc in terminal mode when using zsh
-tnoremap <esc> <c-\><c-n>
+" fix esc in terminal mode
+if has('nvim')
+  augroup fix_terminal_escape
+    autocmd!
+    autocmd TermOpen * tnoremap <esc> <c-\><c-n>
+    autocmd FileType fzf tunmap <esc>
+      \| autocmd BufLeave <buffer> tnoremap <esc> <c-\><c-n>
+  augroup END
+endif
 
+" always open quickfix at the bottom of the screen
+augroup qfbottom
+  autocmd!
+  autocmd FileType qf wincmd J
+augroup END
 
 """"""""""""""""""""""""""""""""
 "
