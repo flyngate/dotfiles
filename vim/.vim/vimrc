@@ -311,7 +311,7 @@ let g:ale_fixers = {
 \   'javascript': ['prettier-eslint'],
 \   'css': ['prettier-eslint'],
 \   'scss': ['prettier'],
-\   'html': ['prettier']
+\   'html': ['prettier'],
 \}
 let g:ale_linters = {
 \   'javascript': ['eslint'],

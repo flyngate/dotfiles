@@ -34,3 +34,4 @@ alias .....="cd ../../../.."
 alias django="python manage.py"
 alias c="docker-compose"
 
+alias session="tmux new-session -s"
