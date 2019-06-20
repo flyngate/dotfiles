@@ -23,7 +23,7 @@ Plug 'Julian/vim-textobj-variable-segment'
 Plug 'ap/vim-css-color'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-emoji'
-Plug 'itchyny/lightline.vim'
+" Plug 'itchyny/lightline.vim'
 Plug 'nightsense/snow'
 Plug 'phanviet/sidonia'
 Plug 'iceisspetrel/monrovia'
@@ -49,7 +49,9 @@ Plug 'w0rp/ale'
 "   Plug 'roxma/nvim-yarp'
 "   Plug 'roxma/vim-hug-neovim-rpc'
 " endif
-Plug 'Valloric/YouCompleteMe'
+" Plug 'Valloric/YouCompleteMe'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'ervandew/supertab'
 
 " snippets
 Plug 'SirVer/ultisnips'
@@ -76,6 +78,7 @@ Plug 'bps/vim-textobj-python'
 
 " file types
 Plug 'plasticboy/vim-markdown'
+Plug 'jparise/vim-graphql'
 Plug 'chr4/nginx.vim'
 
 " tmux integration
@@ -105,12 +108,14 @@ set showcmd                        " show me what I'm typing
 set nohlsearch
 set mouse=a
 
+set backupcopy=yes
+
 " show line numbers
 set number
 set relativenumber
 
 " don't show mode since we have lightline
-set noshowmode
+" set noshowmode
 
 " indentation
 set expandtab
@@ -305,6 +310,8 @@ endif
 let g:ale_fixers = {
 \   'javascript': ['prettier-eslint'],
 \   'css': ['prettier-eslint'],
+\   'scss': ['prettier'],
+\   'html': ['prettier']
 \}
 let g:ale_linters = {
 \   'javascript': ['eslint'],
@@ -355,17 +362,22 @@ augroup END
 " tab completion
 " will insert tab at beginning of line,
 " will use completion if not at beginning
-set wildmode=list:longest,list:full
-function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<Tab>"
-    else
-        return "\<C-p>"
-    endif
-endfunction
-inoremap <Tab> <C-r>=InsertTabWrapper()<CR>
-inoremap <S-Tab> <C-n>
+" set wildmode=list:longest,list:full
+" function! InsertTabWrapper()
+"     let col = col('.') - 1
+"     if !col || getline('.')[col - 1] !~ '\k'
+"         return "\<Tab>"
+"     else
+"         return "\<C-p>"
+"     endif
+" endfunction
+" inoremap <Tab> <C-r>=InsertTabWrapper()<CR>
+" inoremap <S-Tab> <C-n>
+
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+let g:SuperTabDefaultCompletionType = '<c-n>'
 
 let g:ycm_max_num_candidates = 10
 let g:ycm_max_num_identifier_candidates = 5
@@ -507,6 +519,14 @@ augroup END
 " vimscript autocompletion ends up broken at this point somehow...
 " remap the keystroke to itself to fix it
 imap <c-x><c-v> <c-x><c-v>
+
+" macos vs linux clipboard
+if has("mac")
+  set clipboard+=unnamed
+else
+  set clipboard=unnamedplus
+endif
+
 
 """"""""""""""""""""""""""""""""
 "
