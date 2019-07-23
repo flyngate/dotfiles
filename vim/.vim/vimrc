@@ -33,10 +33,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.vim/bin/fzf' }
 Plug 'junegunn/fzf.vim'
-
-" tags
-" Plug 'majutsushi/tagbar'
-" Plug 'ludovicchabant/vim-gutentags'
+Plug 'Shougo/denite.nvim'
 
 " linting / formatting
 Plug 'w0rp/ale'
@@ -312,6 +309,7 @@ let g:ale_fixers = {
 \   'css': ['prettier-eslint'],
 \   'scss': ['prettier'],
 \   'html': ['prettier'],
+\   'htmldjango': ['prettier'],
 \}
 let g:ale_linters = {
 \   'javascript': ['eslint'],
@@ -343,6 +341,10 @@ augroup ale
   autocmd InsertEnter * call ale#Queue(0)
   autocmd InsertLeave * call ale#Queue(0)
 augroup END
+
+" coc-prettier
+vmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format-selected)
 
 
 """"""""""""""""""""""""""""""""
