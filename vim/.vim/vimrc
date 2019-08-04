@@ -39,14 +39,6 @@ Plug 'Shougo/denite.nvim'
 Plug 'w0rp/ale'
 
 " autocomplete
-" if has('nvim')
-"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" else
-"   Plug 'Shougo/deoplete.nvim'
-"   Plug 'roxma/nvim-yarp'
-"   Plug 'roxma/vim-hug-neovim-rpc'
-" endif
-" Plug 'Valloric/YouCompleteMe'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ervandew/supertab'
 
@@ -54,14 +46,14 @@ Plug 'ervandew/supertab'
 Plug 'SirVer/ultisnips'
 
 " vimscript
-" TODO
+" Plug 'machakann/vim-Verdin'
 
 " javascript
 " Plug 'pangloss/vim-javascript'
 " Plug 'mxw/vim-jsx'
+" Plug 'neoclide/vim-jsx-improve'
 Plug 'mattn/emmet-vim'
 Plug 'othree/xml.vim'
-" Plug 'neoclide/vim-jsx-improve'
 Plug 'othree/yajs.vim'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'ElmCast/elm-vim'
@@ -82,6 +74,7 @@ Plug 'chr4/nginx.vim'
 Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
+
 
 """"""""""""""""""""""""""""""""
 "
@@ -233,9 +226,6 @@ nnoremap gp `[v`]
 " search for default register content
 nnoremap g" /\v<<C-r>"><CR>
 
-" shortcut for :Explore
-command! E Explore
-
 command! ClearSwap !rm ~/.vim/swap/*
 
 " set leader to ,
@@ -249,9 +239,6 @@ let mapleader = "\<space>"
 " vim config
 nnoremap <leader>c :e ~/.vim/vimrc<cr>
 nnoremap <leader>C :tabnew ~/.vim/vimrc<cr>
-
-" leader shortcut for :Explore
-nnoremap <leader>e :Explore<cr>
 
 " mappings for creating splits
 nnoremap <leader>v <C-w>v<C-w>l
@@ -353,37 +340,10 @@ nmap <leader>f <Plug>(coc-format-selected)
 "
 """"""""""""""""""""""""""""""""
 
-" deoplete
-" let g:deoplete#enable_at_startup = 1
-
-" Example:
-" call deoplete#custom#option('sources', {
-"   \ '_': ['buffer', 'omni'],
-"   \})
-
-" tab completion
-" will insert tab at beginning of line,
-" will use completion if not at beginning
-" set wildmode=list:longest,list:full
-" function! InsertTabWrapper()
-"     let col = col('.') - 1
-"     if !col || getline('.')[col - 1] !~ '\k'
-"         return "\<Tab>"
-"     else
-"         return "\<C-p>"
-"     endif
-" endfunction
-" inoremap <Tab> <C-r>=InsertTabWrapper()<CR>
-" inoremap <S-Tab> <C-n>
-
 nmap <silent> [c <Plug>(coc-diagnostic-prev)
 nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
 let g:SuperTabDefaultCompletionType = '<c-n>'
-
-let g:ycm_max_num_candidates = 10
-let g:ycm_max_num_identifier_candidates = 5
-let g:ycm_autoclose_preview_window_after_completion = 1
 
 
 """"""""""""""""""""""""""""""""
@@ -394,18 +354,10 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 
 """ JS / JavaScript
 
-" vim-javascript setups
-" let g:javascript_plugin_flow = 1
-
 augroup js
   autocmd!
   autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2
-  autocmd FileType javascript let b:surround_45 = "{/* \r */}"
-  autocmd FileType javascript nmap <buffer> <c-]> :YcmCompleter GoTo<cr>
 augroup END
-
-" TODO
-let g:jsx_ext_required = 0
 
 """ PYTHON
 
@@ -436,9 +388,6 @@ xmap i` if`
 omap a` af`
 xmap a` af`
 
-" delimitMate
-let delimitMate_expand_cr = 1
-
 " ack.vim
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
@@ -453,11 +402,6 @@ let g:UltiSnipsSnippetDirectories=['UltiSnips', 'ultisnips']
 let g:UltiSnipsExpandTrigger='<c-a>'
 let g:UltiSnipsJumpForwardTrigger='<tab>'
 let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
-
-" gutentags
-let g:gutentags_enabled = 1
-let g:gutentags_project_root = ['package.json']
-let g:gutentags_ctags_exclude = ['node_modules', 'dist', '.git', '*.json', '*.md', '*bundle.js', '*bundle.css']
 
 
 """"""""""""""""""""""""""""""""

@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+shopt -s nocaseglob
+
+if ! hash mogrify 2>/dev/null; then
+  echo "Please install imagemagick"
+  exit 1
+fi
+
+if [[ -z "$1" ]]; then
+  echo "Please specify a directory"
+  exit 1
+fi
+
+cd "$1"
+mkdir -p HEIC
+for FILE in $(ls *.heic); do
+  echo "convert $FILE..."
+  mogrify -format jpg "$FILE"
+  JPG_FILE="${FILE/.heic/.jpg}"
+  JPG_FILE="${JPG_FILE/.HEIC/.jpg}"
+  echo "fix date ($FILE, $JPG_FILE)"
+  touch -r "$FILE" "$JPG_FILE"
+  mv "$FILE" HEIC/
+done

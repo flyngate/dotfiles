@@ -38,8 +38,8 @@
   diff = ~/.gitconfig.d/diff-so-fancy/diff-so-fancy | less --tabs=4 -RFX
   show = ~/.gitconfig.d/diff-so-fancy/diff-so-fancy | less --tabs=4 -RFX
 
-[interactive]
-  diffFilter = "~/.gitconfig.d/diff-so-fancy/diff-so-fancy"
+; [interactive]
+;   diffFilter = "~/.gitconfig.d/diff-so-fancy/diff-so-fancy"
 
 [include]
   path = ~/.gitconfig.local

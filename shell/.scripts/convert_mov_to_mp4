@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use Cwd 'abs_path';
 use File::Basename;
+use File::Copy;
 
 sub list_files_with_extension() {
   my $raw_dir = shift or die "no directory specified";
@@ -19,6 +20,7 @@ sub list_files_with_extension() {
 }
 
 sub is_vertical_video() {
+  # TODO: video can be vertical without rotate: 90
   my $path = shift;
   my @output = `ffprobe "$path" 2>&1`;
   join('', @output) =~ /rotate\s*:\s*90/;
@@ -32,22 +34,30 @@ sub encode_to_mp4() {
           -c:a aac "$dest"`;
 }
 
+sub fix_created_modified_dates() {
+  my ($src, $dest) = @_;
+  `touch -r "$src" "$dest"`
+}
+
 if (not defined $ARGV[0]) {
   die "Usage: ./convert_mov_to_mp4 <dir>\n";
 }
 
 my $raw_dir = $ARGV[0];
 my $dir = abs_path($raw_dir);
-my $dest_dir = "$dir/CONVERTED";
+my $backup_dir = "$dir/MOV";
 
 my @mov_files = sort(&list_files_with_extension($dir, "mov"));
 
-if (not -d $dest_dir) {
-  mkdir $dest_dir or die "Can't create $dest_dir";  
+if (not -d $backup_dir) {
+  mkdir $backup_dir or die "Can't create $backup_dir";  
 }
 
 foreach my $name (@mov_files) {
   my $src = "$dir/$name";
-  my $dest = $dest_dir . "/" . ($name =~ s/mov$/mp4/igr);
+  my $dest = $dir . "/" . ($name =~ s/mov$/mp4/igr);
+  my $backup = "$backup_dir/$name";
   &encode_to_mp4($src, $dest);
+  &fix_created_modified_dates($src, $dest);
+  move($src, $backup);
 }

@@ -1,7 +1,7 @@
-
 ### shell variables
 export EDITOR="vim"
 export PATH="$PATH:$HOME/.scripts"
+export LANG=en_US
 
 ### constants
 __zsh_prompt="$HOME/.zsh.d/prompts/prompt2"
