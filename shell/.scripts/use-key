@@ -1,0 +1,5 @@
+#!/bin/sh
+shell=${SHELL:-/bin/sh}
+command="$2"
+args="${@:3}"
+ssh-agent "$shell" -c "ssh-add ~/.ssh/$1; $command $args"
