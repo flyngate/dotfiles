@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for f in $(ls *.svg); do
+  svgo -i "$f" -o "$f"
+done
+
