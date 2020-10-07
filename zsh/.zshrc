@@ -2,6 +2,7 @@
 export EDITOR="vim"
 export PATH="$PATH:$HOME/.scripts"
 export LANG=en_US
+export TERM="screen-256color"
 
 ### constants
 __zsh_prompt="$HOME/.zsh.d/prompts/prompt2"
@@ -29,6 +30,31 @@ zstyle ':completion:*' menu select
 
 ### disable flow control
 stty -ixon
+
+### nvm
+
+# defer initialization of nvm until nvm, node or a node-dependent command is
+# run. Ensure this block is only run once if .bashrc gets sourced multiple times
+# by checking whether __init_nvm is a function.
+if [ -s "$HOME/.nvm/nvm.sh" ] && [ -z "$(command -v __init_nvm)" ]; then
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+  declare -a __node_commands=('nvm' 'node' 'npm' 'yarn' 'webpack')
+  function __init_nvm() {
+    for i in "${__node_commands[@]}"; do unalias $i; done
+    . "$NVM_DIR"/nvm.sh
+    unset __node_commands
+    unset -f __init_nvm
+    function __init_nvm() {}
+  }
+  for i in "${__node_commands[@]}"; do alias $i='__init_nvm && '$i; done
+fi
+
+# this loads nvm bash_completion
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+### fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ### prompt
 source $__zsh_prompt
@@ -61,5 +87,3 @@ if [ -d "$__zsh_local" ]; then
     source "$__zsh_local/$file"
   done
 fi
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

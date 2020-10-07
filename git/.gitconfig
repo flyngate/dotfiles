@@ -16,6 +16,7 @@
 
   ch = checkout
   chb = checkout -b
+  cht = checkout -t
 
   co = commit
   com = commit -m
@@ -28,6 +29,8 @@
 
   subin = submodule init
   subup = submodule update
+
+  apush = "!git add --all && git commit --amend --no-edit && git push -f"
 
 [push]
   # push easily: http://stackoverflow.com/a/23918418/89484

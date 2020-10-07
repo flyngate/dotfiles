@@ -14,12 +14,14 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
-Plug 'cohama/lexima.vim'
+" Plug 'cohama/lexima.vim'
+Plug 'jiangmiao/auto-pairs'
 Plug 'kana/vim-textobj-user'
 Plug 'fvictorio/vim-textobj-backticks'
 Plug 'Julian/vim-textobj-variable-segment'
 
 " visual
+Plug 'arzg/vim-colors-xcode'
 Plug 'ap/vim-css-color'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-emoji'
@@ -28,15 +30,20 @@ Plug 'nightsense/snow'
 Plug 'phanviet/sidonia'
 Plug 'iceisspetrel/monrovia'
 Plug 'chriskempson/base16-vim'
+Plug 'artanikin/vim-synthwave84'
 
 " search
 Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.vim/bin/fzf' }
 Plug 'junegunn/fzf.vim'
-Plug 'Shougo/denite.nvim'
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
+" Plug 'Shougo/denite.nvim'
+
+" navigation
+Plug 'preservim/nerdtree'
 
 " linting / formatting
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 
 " autocomplete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -52,11 +59,12 @@ Plug 'SirVer/ultisnips'
 " Plug 'pangloss/vim-javascript'
 " Plug 'mxw/vim-jsx'
 " Plug 'neoclide/vim-jsx-improve'
+Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'samuelsimoes/vim-jsx-utils'
 Plug 'mattn/emmet-vim'
 Plug 'othree/xml.vim'
 Plug 'othree/yajs.vim'
 Plug 'HerringtonDarkholme/yats.vim'
-Plug 'ElmCast/elm-vim'
 
 " css
 Plug 'hail2u/vim-css3-syntax'
@@ -66,6 +74,8 @@ Plug 'hail2u/vim-css3-syntax'
 Plug 'bps/vim-textobj-python'
 
 " file types
+Plug 'tbastos/vim-lua'
+Plug 'ElmCast/elm-vim'
 Plug 'plasticboy/vim-markdown'
 Plug 'jparise/vim-graphql'
 Plug 'chr4/nginx.vim'
@@ -164,6 +174,9 @@ let g:netrw_altv=1
 " automatically reload buffer if the file has changed
 " and the buffer has no changes unsaved
 set autoread
+augroup checktime
+  au CursorHold * checktime
+augroup END
 
 " split windows config
 set splitright
@@ -212,10 +225,10 @@ map <D-0> :tablast<CR>
 " nnoremap <C-l> <C-w>l
 
 " bubble lines / visual selections up and down
-nmap <c-up> [e==
-nmap <c-down> ]e==
-vmap <c-up> [egv=gv
-vmap <c-down> ]egv=gv
+nmap <m-k> [e==
+nmap <m-j> ]e==
+vmap <m-k> [egv=gv
+vmap <m-j> ]egv=gv
 
 " set %% as an alias for the directory of the current file
 cabbr <expr> %% expand('%:p:h')
@@ -228,7 +241,7 @@ nnoremap g" /\v<<C-r>"><CR>
 
 command! ClearSwap !rm ~/.vim/swap/*
 
-" set leader to ,
+" set leader to space
 let mapleader = "\<space>"
 
 " map tab to % in normal and visual mode
@@ -237,12 +250,18 @@ let mapleader = "\<space>"
 " vnoremap <tab> %
 
 " vim config
-nnoremap <leader>c :e ~/.vim/vimrc<cr>
-nnoremap <leader>C :tabnew ~/.vim/vimrc<cr>
+nnoremap <leader>c :e ~/.vim/nvimrc<cr>
+nnoremap <leader>C :tabnew ~/.vim/nvimrc<cr>
 
 " mappings for creating splits
 nnoremap <leader>v <C-w>v<C-w>l
 nnoremap <leader>s <C-w>s<C-w>l
+
+" tabs
+nnoremap <m-h> gT
+nnoremap <m-l> gt
+nnoremap <m-w> :tabc<cr>
+nnoremap <m-t> :tabnew<cr>
 
 " fzf aliases
 nnoremap <leader>a :Ag<space>
@@ -256,10 +275,10 @@ nnoremap <leader>sc :Colors<cr>
 nnoremap <leader>z :Goyo<cr>
 
 " update config
-nnoremap <leader>uc :update<cr>:so ~/.vim/vimrc<cr>
+nnoremap <leader>uc :update<cr>:so ~/.vim/nvimrc<cr>
 
 " update plugins
-nnoremap <leader>up :update<cr>:so ~/.vim/vimrc<cr>:PlugUpdate<cr>
+nnoremap <leader>up :update<cr>:so ~/.vim/nvimrc<cr>:PlugUpdate<cr>
 
 " mnemonic: Copy File path
 " nnoremap <leader>cf :let @+=expand("%:p")<cr>
@@ -270,6 +289,12 @@ nnoremap <leader>up :update<cr>:so ~/.vim/vimrc<cr>:PlugUpdate<cr>
 " mnemonic: yank File Name
 " nnoremap <leader>fn :let @"=expand("%")<cr>
 
+" vim sessions
+let g:session_dir = '~/.vim/sessions'
+exec 'nnoremap <Leader>sw :mks! ' . g:session_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
+
+
 """"""""""""""""""""""""""""""""
 "
 " SEARCH
@@ -279,10 +304,26 @@ nnoremap <leader>up :update<cr>:so ~/.vim/vimrc<cr>:PlugUpdate<cr>
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
   command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-  nnoremap \ :Ag -Q<space>
+  " nnoremap \ :Ag -Q<space>
 else
   echoe 'Install "ag" for sane :Ag command search'
 endif
+
+
+""""""""""""""""""""""""""""""""
+"
+" NAVIGATION
+"
+""""""""""""""""""""""""""""""""
+
+nnoremap <c-n> :NERDTreeToggle<cr>
+nnoremap - :NERDTreeFind<cr>
+
+augroup nerdtree
+  autocmd!
+  autocmd FileType nerdtree map <buffer> - u
+  autocmd FileType nerdtree unmap <buffer> CD
+augroup END
 
 
 """"""""""""""""""""""""""""""""
@@ -313,25 +354,21 @@ let g:ale_sign_column_always = 1
 let g:ale_lint_on_text_changed = 'never'
 
 " move between linting errors
-nmap <silent> [r :ALEPreviousWrap<cr>
-nmap <silent> ]r :ALENextWrap<cr>
+" nmap <silent> [r :ALEPreviousWrap<cr>
+" nmap <silent> ]r :ALENextWrap<cr>
 
 " ALE linting events
 augroup ale
   autocmd!
 
-  autocmd VimEnter *
-    \ set updatetime=1000 |
-    \ let g:ale_lint_on_text_changed = 0
-  autocmd CursorHold * call ale#Queue(0)
-  autocmd CursorHoldI * call ale#Queue(0)
-  autocmd InsertEnter * call ale#Queue(0)
-  autocmd InsertLeave * call ale#Queue(0)
+  " autocmd VimEnter *
+  "   \ set updatetime=1000 |
+  "   \ let g:ale_lint_on_text_changed = 0
+  " autocmd CursorHold * call ale#Queue(0)
+  " autocmd CursorHoldI * call ale#Queue(0)
+  " autocmd InsertEnter * call ale#Queue(0)
+  " autocmd InsertLeave * call ale#Queue(0)
 augroup END
-
-" coc-prettier
-vmap <leader>f <Plug>(coc-format-selected)
-nmap <leader>f <Plug>(coc-format-selected)
 
 
 """"""""""""""""""""""""""""""""
@@ -339,9 +376,6 @@ nmap <leader>f <Plug>(coc-format-selected)
 " AUTOCOMPLETION
 "
 """"""""""""""""""""""""""""""""
-
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
 let g:SuperTabDefaultCompletionType = '<c-n>'
 
@@ -352,11 +386,12 @@ let g:SuperTabDefaultCompletionType = '<c-n>'
 "
 """"""""""""""""""""""""""""""""
 
-""" JS / JavaScript
+""" JavaScript / JSX
 
 augroup js
   autocmd!
   autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2
+  nnoremap cst< :call JSXChangeTagPrompt()<cr>
 augroup END
 
 """ PYTHON
@@ -398,8 +433,8 @@ let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 nnoremap <c-p> :FZF<cr>
 
 " ultisnips
-let g:UltiSnipsSnippetDirectories=['UltiSnips', 'ultisnips']
-let g:UltiSnipsExpandTrigger='<c-a>'
+let g:UltiSnipsSnippetDirectories=['ultisnips']
+let g:UltiSnipsExpandTrigger='<c-l>'
 let g:UltiSnipsJumpForwardTrigger='<tab>'
 let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
 
@@ -430,6 +465,53 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
+colorscheme base16-atelier-dune-light
+
+""""""""""""""""""""""""""""""""
+"
+" COC
+"
+""""""""""""""""""""""""""""""""
+
+" coc-prettier
+vmap <leader>f :CocCommand prettier.formatFile<cr>
+nmap <leader>f :CocCommand prettier.formatFile<cr>
+
+let s:enable_prettier_for_dirs = ['/code/pd/uikit/', '/code/pd/uikit.next/']
+
+function! TogglePrettierExtension()
+  let current_dir = getcwd()
+  let activate_prettier = 0
+
+  for dir in s:enable_prettier_for_dirs
+    if current_dir =~# dir
+      activate_prettier = 1
+    endif
+  endfor
+
+  let command = activate_prettier ? 'activeExtension' : 'deactivateExtension'
+  echom command
+  call CocAction(command, 'coc-prettier')
+endfunction
+" autocmd VimEnter,DirChanged :<C-u>call TooglePrettierExtension()<cr>
+
+nmap <silent> [r <Plug>(coc-diagnostic-prev)
+nmap <silent> ]r <Plug>(coc-diagnostic-next)
+
+nnoremap gd :call CocAction('jumpDefinition', 'drop')<cr>
+
+nnoremap <leader>x :CocCommand<cr>
+
+nnoremap <leader>l :CocList<space>
+nnoremap <leader>o :CocListResume<cr>
+nnoremap <leader>b :CocList buffers<cr>
+nnoremap <leader>g :CocList grep<cr>
+
+
+" clap
+
+" nnoremap <c-p> :Clap files<cr>
+" nnoremap <leader>w :Clap windows<cr>
 
 """"""""""""""""""""""""""""""""
 "

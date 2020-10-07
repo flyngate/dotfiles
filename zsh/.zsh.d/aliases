@@ -1,12 +1,12 @@
 
 # platform specific `ls` alias
 if [[ $platform == 'linux' ]]; then
-   alias ls='ls --color=auto'
+  alias ls='ls --color=auto'
 elif [[ $platform == 'freebsd' || $platform == 'macos' ]]; then
-   alias ls='ls -G'
+  alias ls='ls -G'
 fi
 
-# git 'g' alias
+# 'g' alias for git
 function g {
   if [[ $# > 0 ]]; then
     git $@
@@ -14,10 +14,36 @@ function g {
     git status --short --branch
   fi
 }
-compdef g=git
+compdef g='git'
 
-# make directory and change into it
-function mcd {
+# git aliases
+alias gs="git status"
+alias gd="git diff"
+alias gds="git diff --staged"
+alias ga="git add --all "
+alias gc="git commit -m "
+alias go="git checkout "
+alias rebase-onto-master="git fetch && git rebase origin/master"
+alias root='cd $(git rev-parse --show-cdup)'
+
+# config files aliases
+function conf {
+  case "$1" in
+    zsh )
+      nvim ~/.zshrc
+      ;;
+    "zsh.aliases" )
+      nvim ~/.zsh.d/aliases
+      ;;
+    nvim )
+      nvim ~/.vim/nvimrc
+    ;;
+  esac
+}
+alias zshconf="nvim ~/.zshrc"
+alias zshdconf="nvim ~/.zsh.d"
+
+function mkdircd {
   mkdir -p "$1" && cd "$1";
 }
 
@@ -33,5 +59,6 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias django="python manage.py"
 alias c="docker-compose"
-
 alias session="tmux new-session -s"
+alias tcd="tmux attach-session -c"
+

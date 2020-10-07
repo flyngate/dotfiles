@@ -16,7 +16,7 @@ __prompt_resized=""
 setopt prompt_subst
 
 PROMPT=' $(__prompt_ssh)$__HELLO_PRE$(__prompt_hello)$__HELLO_POST$(__prompt_is_reset_needed) '
-RPROMPT='$(__prompt_git_or_cwd)'
+RPROMPT='$(__prompt_git)'
 
 # runs on window resize
 TRAPWINCH() {
@@ -66,13 +66,13 @@ __prompt_ssh() {
   fi
 }
 
-__prompt_git_or_cwd() {
-  local prompt="$(__prompt_git)"
-  if [[ -z "$prompt" ]]; then
-    prompt="$__CWD_PRE$(__prompt_cwd)$__CWD_POST"
-  fi
-  echo "$prompt"
-}
+# __prompt_git_or_cwd() {
+#   local prompt="$(__prompt_git)"
+#   if [[ -z "$prompt" ]]; then
+#     prompt="$__CWD_PRE$(__prompt_cwd)$__CWD_POST"
+#   fi
+#   echo "$prompt"
+# }
 
 __prompt_cwd() {
   local curdir iterdir inner outer
@@ -99,12 +99,15 @@ __prompt_cwd() {
 }
 
 __prompt_git() {
+  local git_prompt=""
   if type git >/dev/null 2>&1 && __prompt_is_repository; then
     local branch="$(__prompt_branch_name)"
     local repo="$(__prompt_repository)"
     local dirty="$(__prompt_branch_dirty)"
-    echo "$__REPO_PRE$repo$__REPO_POST $__BRANCH_PRE⇡ $branch$dirty$__BRANCH_POST"
+    # echo "$__REPO_PRE$repo$__REPO_POST $__BRANCH_PRE⇡ $branch$dirty$__BRANCH_POST"
+    git_prompt="$__BRANCH_PRE⇡ $branch$dirty$__BRANCH_POST"
   fi
+  echo "$__CWD_PRE$(__prompt_cwd)$__CWD_POST $git_prompt"
 }
 
 __prompt_is_repository() {
