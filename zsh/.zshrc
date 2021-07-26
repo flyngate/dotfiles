@@ -4,6 +4,9 @@ export PATH="$PATH:$HOME/.scripts"
 export LANG=en_US
 export TERM="screen-256color"
 
+export FZF_DEFAULT_COMMAND="ag -g ''"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
 ### constants
 __zsh_prompt="$HOME/.zsh.d/prompts/prompt2"
 __zsh_aliases="$HOME/.zsh.d/aliases"

@@ -1,0 +1,6 @@
+  {
+    "coc.preferences.formatOnSaveFiletypes": ["json", "html", "css", "scss", "mdx"],
+    "coc.preferences.formatOnSaveFiletypes.0": ["html", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "css", "markdown.0", "mdx"],
+    "typescript.format.enabled": false,
+    "list.source.grep.command": "ag"
+  }

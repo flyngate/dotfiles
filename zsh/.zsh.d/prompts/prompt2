@@ -10,38 +10,10 @@ __REPO_POST="$f"
 __BRANCH_PRE="%F{black}%B"
 __BRANCH_POST="%b%f"
 
-__prompt_last_col=$COLUMNS
-__prompt_resized=""
-
 setopt prompt_subst
 
-PROMPT=' $(__prompt_ssh)$__HELLO_PRE$(__prompt_hello)$__HELLO_POST$(__prompt_is_reset_needed) '
+PROMPT=' $(__prompt_ssh)$__HELLO_PRE$(__prompt_hello)$__HELLO_POST '
 RPROMPT='$(__prompt_git)'
-
-# runs on window resize
-TRAPWINCH() {
-  __prompt_resized=true
-  RPROMPT=$RPROMPT
-}
-
-# reset if the window is narrower than it was
-# after the last reset
-# check before every command execution
-precmd() {
-  if [[ -n $(__prompt_is_reset_needed) ]]; then
-    __prompt_resized=""
-    __prompt_last_col=$COLUMNS
-    reset
-  fi
-}
-
-__prompt_is_reset_needed() {
-  if [[ -n "$__prompt_resized" ]]; then
-    if [[ "$__prompt_last_col" -gt $COLUMNS ]]; then
-      echo " %F{black}%B(reset)%b%f"
-    fi
-  fi
-}
 
 __prompt_hello() {
   case `whoami` in
@@ -65,14 +37,6 @@ __prompt_ssh() {
     echo "($(whoami)@$(hostname)) "
   fi
 }
-
-# __prompt_git_or_cwd() {
-#   local prompt="$(__prompt_git)"
-#   if [[ -z "$prompt" ]]; then
-#     prompt="$__CWD_PRE$(__prompt_cwd)$__CWD_POST"
-#   fi
-#   echo "$prompt"
-# }
 
 __prompt_cwd() {
   local curdir iterdir inner outer
@@ -104,7 +68,6 @@ __prompt_git() {
     local branch="$(__prompt_branch_name)"
     local repo="$(__prompt_repository)"
     local dirty="$(__prompt_branch_dirty)"
-    # echo "$__REPO_PRE$repo$__REPO_POST $__BRANCH_PRE⇡ $branch$dirty$__BRANCH_POST"
     git_prompt="$__BRANCH_PRE⇡ $branch$dirty$__BRANCH_POST"
   fi
   echo "$__CWD_PRE$(__prompt_cwd)$__CWD_POST $git_prompt"

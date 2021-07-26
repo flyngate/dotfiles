@@ -1,7 +1,3 @@
-snippet kit
-import $1 from '@ui-kit.next/components/$2';
-endsnippet
-
 snippet log
 console.log($1);
 endsnippet
@@ -18,19 +14,16 @@ snippet imp
 import $1 from '$2';
 endsnippet
 
+snippet impkit
+import $1 from '@ui-kit.next/components/$1';
+endsnippet
+
+snippet impkit2
+import $1 from '@ui-kit.next/components/$2';
+endsnippet
+
 snippet impstyled
-import styled from 'styled-components';
-endsnippet
-
-snippet iantd
-import { $1 } from 'antd';
-endsnippet
-
-snippet iramda
-import { $1 } from 'ramda';
-
-snippet ilib2
-import $1 from 'components/lib2/$1';
+import styled, { StyledProps, css } from 'styled-components';
 endsnippet
 
 snippet styled
@@ -38,95 +31,6 @@ const $1 = styled.$2\`
   $0
 \`;
 
-endsnippet
-
-snippet newcomp
-import React from 'react';
-import { connect } from 'react-redux';
-import styled from 'styled-components';
-
-const Wrapper = styled.div\`\`;
-
-const connector = connect(
-  null,
-	null,
-);
-
-const $1 = ({}) => {
-  return (
-	  <Wrapper>$0</Wrapper>
-	);
-};
-
-export default connector($1);
-endsnippet
-
-snippet comp
-const $1 = ({
-}) => {
-  return (
-		<Wrapper>$0</Wrapper>
-	);
-};
-endsnippet
-
-snippet classcomp
-class $1 extends React.Component<*, *> {
-	render() {
-		return ($0);
-	}
-}
-endsnippet
-
-snippet saga
-function* $1($2) {
-	try {
-	  $0
-	} catch (error) {
-	}
-}
-endsnippet
-
-snippet aa
-export const $1 = {
-	request: (payload: *) => ({
-		type: types.${2/([A-Z][a-z]+)/\U$1\E_/g}REQUEST,
-		payload,
-	}),
-	success: (payload: *) => ({
-		type: types.${2/([A-Z][a-z]+)/\U$1\E_/g}SUCCESS,
-		payload,
-	}),
-	error: (payload: *) => ({
-		type: types.${2/([A-Z][a-z]+)/\U$1\E_/g}ERROR,
-		payload,
-	}),
-};
-types.${2/([A-Z][a-z]+)/\U$1\E_/g}REQUEST,
-types.${2/([A-Z][a-z]+)/\U$1\E_/g}SUCCESS,
-types.${2/([A-Z][a-z]+)/\U$1\E_/g}ERROR,
-$0
-endsnippet
-
-snippet a3
-export const $1 = {
-	request: (payload) => ({
-		type: types.${1/([A-Z]?[a-z]+)(?=[A-Z]|$)/\U$1\E_/g}REQUEST,
-		payload,
-	}),
-	success: (payload) => ({
-		type: types.${1/([A-Z]?[a-z]+)(?=[A-Z]|$)/\U$1\E_/g}SUCCESS,
-		payload,
-	}),
-	error: (payload) => ({
-		type: types.${1/([A-Z]?[a-z]+)(?=[A-Z]|$)/\U$1\E_/g}ERROR,
-		payload,
-	}),
-};
-types.${1/([A-Z]?[a-z]+)(?=[A-Z]|$)/\U$1\E_/g}REQUEST,
-types.${1/([A-Z]?[a-z]+)(?=[A-Z]|$)/\U$1\E_/g}SUCCESS,
-types.${1/([A-Z]?[a-z]+)(?=[A-Z]|$)/\U$1\E_/g}ERROR,
-$0
 endsnippet
 
 snippet webp

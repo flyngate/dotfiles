@@ -14,74 +14,55 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
-" Plug 'cohama/lexima.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'kana/vim-textobj-user'
 Plug 'fvictorio/vim-textobj-backticks'
 Plug 'Julian/vim-textobj-variable-segment'
+
+" tmux integration
+Plug 'christoomey/vim-tmux-navigator'
 
 " visual
 Plug 'arzg/vim-colors-xcode'
 Plug 'ap/vim-css-color'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-emoji'
-" Plug 'itchyny/lightline.vim'
 Plug 'nightsense/snow'
 Plug 'phanviet/sidonia'
 Plug 'iceisspetrel/monrovia'
 Plug 'chriskempson/base16-vim'
 Plug 'artanikin/vim-synthwave84'
 
-" search
-Plug 'mileszs/ack.vim'
-Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.vim/bin/fzf' }
-Plug 'junegunn/fzf.vim'
-Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
-" Plug 'Shougo/denite.nvim'
-
 " navigation
 Plug 'preservim/nerdtree'
 
-" linting / formatting
-" Plug 'w0rp/ale'
+" search
+Plug 'dyng/ctrlsf.vim'
+Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.vim/bin/fzf' }
+Plug 'junegunn/fzf.vim'
 
-" autocomplete
+" lsp / autocomplete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ervandew/supertab'
 
 " snippets
 Plug 'SirVer/ultisnips'
-
-" vimscript
-" Plug 'machakann/vim-Verdin'
+Plug 'mattn/emmet-vim'
 
 " javascript
-" Plug 'pangloss/vim-javascript'
-" Plug 'mxw/vim-jsx'
-" Plug 'neoclide/vim-jsx-improve'
-Plug 'MaxMEllon/vim-jsx-pretty'
-Plug 'samuelsimoes/vim-jsx-utils'
-Plug 'mattn/emmet-vim'
-Plug 'othree/xml.vim'
 Plug 'othree/yajs.vim'
 Plug 'HerringtonDarkholme/yats.vim'
-
-" css
-Plug 'hail2u/vim-css3-syntax'
-" Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-
-" python
-Plug 'bps/vim-textobj-python'
+Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'samuelsimoes/vim-jsx-utils'
 
 " file types
-Plug 'tbastos/vim-lua'
-Plug 'ElmCast/elm-vim'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'othree/xml.vim'
 Plug 'plasticboy/vim-markdown'
-Plug 'jparise/vim-graphql'
+Plug 'jxnblk/vim-mdx-js'
+Plug 'udalov/kotlin-vim'
+Plug 'tbastos/vim-lua'
 Plug 'chr4/nginx.vim'
-
-" tmux integration
-Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
 
@@ -253,26 +234,17 @@ let mapleader = "\<space>"
 nnoremap <leader>c :e ~/.vim/nvimrc<cr>
 nnoremap <leader>C :tabnew ~/.vim/nvimrc<cr>
 
-" mappings for creating splits
-nnoremap <leader>v <C-w>v<C-w>l
-nnoremap <leader>s <C-w>s<C-w>l
-
 " tabs
 nnoremap <m-h> gT
 nnoremap <m-l> gt
 nnoremap <m-w> :tabc<cr>
 nnoremap <m-t> :tabnew<cr>
 
-" fzf aliases
-nnoremap <leader>a :Ag<space>
-nnoremap <leader>sg :GFiles<cr>
-nnoremap <leader>sG :GFiles?<cr>
-nnoremap <leader>st :Tags<cr>
-nnoremap <leader>sT :BTags<cr>
-nnoremap <leader>sc :Colors<cr>
-
 " zen mode
 nnoremap <leader>z :Goyo<cr>
+
+" close all buffers
+nnoremap <leader>r :bufdo bd!<cr>
 
 " update config
 nnoremap <leader>uc :update<cr>:so ~/.vim/nvimrc<cr>
@@ -280,19 +252,10 @@ nnoremap <leader>uc :update<cr>:so ~/.vim/nvimrc<cr>
 " update plugins
 nnoremap <leader>up :update<cr>:so ~/.vim/nvimrc<cr>:PlugUpdate<cr>
 
-" mnemonic: Copy File path
-" nnoremap <leader>cf :let @+=expand("%:p")<cr>
-
-" mnemonic: Yank File path
-" nnoremap <leader>yf :let @"=expand("%:p")<cr>
-
-" mnemonic: yank File Name
-" nnoremap <leader>fn :let @"=expand("%")<cr>
-
 " vim sessions
-let g:session_dir = '~/.vim/sessions'
-exec 'nnoremap <Leader>sw :mks! ' . g:session_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
-exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
+" let g:session_dir = '~/.vim/sessions'
+" exec 'nnoremap <Leader>sw :mks! ' . g:session_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+" exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 
 
 """"""""""""""""""""""""""""""""
@@ -301,13 +264,15 @@ exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS
 "
 """"""""""""""""""""""""""""""""
 
-if executable('ag')
-  set grepprg=ag\ --nogroup\ --nocolor
-  command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-  " nnoremap \ :Ag -Q<space>
-else
-  echoe 'Install "ag" for sane :Ag command search'
-endif
+nmap <leader>a <Plug>CtrlSFPrompt
+nmap <leader>A :CtrlSFToggle<cr>
+nmap <leader>s <Plug>CtrlSFCwordPath
+nmap <leader>S <Plug>CtrlSFCCwordPath
+vmap <leader>s <Plug>CtrlSFVwordExec
+
+let g:ctrlsf_auto_focus = {
+  \ "at": "start"
+  \ }
 
 
 """"""""""""""""""""""""""""""""
@@ -316,6 +281,7 @@ endif
 "
 """"""""""""""""""""""""""""""""
 
+let NERDTreeQuitOnOpen=1
 nnoremap <c-n> :NERDTreeToggle<cr>
 nnoremap - :NERDTreeFind<cr>
 
@@ -323,51 +289,6 @@ augroup nerdtree
   autocmd!
   autocmd FileType nerdtree map <buffer> - u
   autocmd FileType nerdtree unmap <buffer> CD
-augroup END
-
-
-""""""""""""""""""""""""""""""""
-"
-" LINTERS / FORMATTERS
-"
-""""""""""""""""""""""""""""""""
-
-let g:ale_fixers = {
-\   'javascript': ['prettier-eslint'],
-\   'css': ['prettier-eslint'],
-\   'scss': ['prettier'],
-\   'html': ['prettier'],
-\   'htmldjango': ['prettier'],
-\}
-let g:ale_linters = {
-\   'javascript': ['eslint'],
-\   'python': ['flake8'],
-\}
-" let g:ale_sign_error = '●' " Less aggressive than the default '>>'
-" let g:ale_sign_warning = '.'
-let g:ale_fix_on_save = 1
-" let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
-let g:ale_lint_on_enter = 1
-let g:ale_javascript_prettier_eslint_options = '--single-quote --trailing-comma=all'
-" let g:ale_completion_enabled = 1 " Enable completion where available.
-let g:ale_sign_column_always = 1
-let g:ale_lint_on_text_changed = 'never'
-
-" move between linting errors
-" nmap <silent> [r :ALEPreviousWrap<cr>
-" nmap <silent> ]r :ALENextWrap<cr>
-
-" ALE linting events
-augroup ale
-  autocmd!
-
-  " autocmd VimEnter *
-  "   \ set updatetime=1000 |
-  "   \ let g:ale_lint_on_text_changed = 0
-  " autocmd CursorHold * call ale#Queue(0)
-  " autocmd CursorHoldI * call ale#Queue(0)
-  " autocmd InsertEnter * call ale#Queue(0)
-  " autocmd InsertLeave * call ale#Queue(0)
 augroup END
 
 
@@ -393,8 +314,6 @@ augroup js
   autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2
   nnoremap cst< :call JSXChangeTagPrompt()<cr>
 augroup END
-
-""" PYTHON
 
 """ MARKDOWN
 let g:vim_markdown_folding_disabled = 1
@@ -423,12 +342,8 @@ xmap i` if`
 omap a` af`
 xmap a` af`
 
-" ack.vim
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-
 " fzf
+let $BAT_THEME='OneHalfLight'
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 nnoremap <c-p> :FZF<cr>
 
@@ -465,7 +380,8 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
-colorscheme base16-atelier-dune-light
+" colorscheme base16-atelier-dune-light
+colorscheme xcodelight
 
 """"""""""""""""""""""""""""""""
 "
@@ -473,45 +389,32 @@ colorscheme base16-atelier-dune-light
 "
 """"""""""""""""""""""""""""""""
 
-" coc-prettier
-vmap <leader>f :CocCommand prettier.formatFile<cr>
-nmap <leader>f :CocCommand prettier.formatFile<cr>
+" let g:coc_node_path = '/Users/igor/.nvm/versions/node/v12.13.0/bin/node'
 
-let s:enable_prettier_for_dirs = ['/code/pd/uikit/', '/code/pd/uikit.next/']
-
-function! TogglePrettierExtension()
-  let current_dir = getcwd()
-  let activate_prettier = 0
-
-  for dir in s:enable_prettier_for_dirs
-    if current_dir =~# dir
-      activate_prettier = 1
-    endif
-  endfor
-
-  let command = activate_prettier ? 'activeExtension' : 'deactivateExtension'
-  echom command
-  call CocAction(command, 'coc-prettier')
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
 endfunction
-" autocmd VimEnter,DirChanged :<C-u>call TooglePrettierExtension()<cr>
 
 nmap <silent> [r <Plug>(coc-diagnostic-prev)
 nmap <silent> ]r <Plug>(coc-diagnostic-next)
-
-nnoremap gd :call CocAction('jumpDefinition', 'drop')<cr>
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
 nnoremap <leader>x :CocCommand<cr>
+nnoremap <leader>k :CocAction<cr>
+nnoremap <leader>e :CocList extensions<cr>
 
-nnoremap <leader>l :CocList<space>
-nnoremap <leader>o :CocListResume<cr>
-nnoremap <leader>b :CocList buffers<cr>
-nnoremap <leader>g :CocList grep<cr>
+vmap <leader>f :CocCommand prettier.formatFile<cr>
+nmap <leader>f :CocCommand prettier.formatFile<cr>
 
-
-" clap
-
-" nnoremap <c-p> :Clap files<cr>
-" nnoremap <leader>w :Clap windows<cr>
 
 """"""""""""""""""""""""""""""""
 "
@@ -568,4 +471,3 @@ source $HOME/.vim/vimrc.local
 " use this variable to avoid applying settings twice when
 " reloading vimrc with :so ~/.vim/vimrc
 let g:vim_initialized = 1
-
