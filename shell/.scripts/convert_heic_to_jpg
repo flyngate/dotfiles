@@ -3,12 +3,14 @@ set -e
 shopt -s nocaseglob
 
 if ! hash mogrify 2>/dev/null; then
-  echo "Please install imagemagick"
+  echo "Please install imagemagick."
+  echo "    macOS: brew install --with-libde265 imagemagick"
+  echo
   exit 1
 fi
 
 if [[ -z "$1" ]]; then
-  echo "Please specify a directory"
+  echo "Please specify a directory."
   exit 1
 fi
 

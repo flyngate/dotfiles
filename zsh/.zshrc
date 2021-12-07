@@ -14,6 +14,9 @@ __zsh_key_bindings="$HOME/.zsh.d/key_bindings"
 __zsh_functions="$HOME/.zsh.d/functions"
 __zsh_local="$HOME/.zsh.local"
 
+### enable vi mode
+bindkey -v
+
 ### discover platform
 platform="unknown"
 case $(uname) in
@@ -23,7 +26,6 @@ case $(uname) in
 esac
 
 ### completion
-
 fpath=($HOME/.zsh.d/completion $fpath)
 autoload -U compinit promptinit colors
 compinit

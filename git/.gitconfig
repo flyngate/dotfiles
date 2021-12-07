@@ -2,7 +2,8 @@
   excludesfile = ~/.gitignore.global
 
 [user]
-  name = Igor Stroganov
+	name = Igor Stroganov
+	email = igor.stroganov@pandadoc.com
 
 [alias]
   aa = add --all
@@ -46,3 +47,5 @@
 
 [include]
   path = ~/.gitconfig.local
+[use]
+	name = Igor Stroganov
