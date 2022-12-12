@@ -4,22 +4,15 @@
 "
 """"""""""""""""""""""""""""""""
 
+" To enable C# support:
+"
+"     dotnet tool install --global csharp-ls
+
 call plug#begin('~/.vim/plugins')
 
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-" Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-" Plug 'nvim-treesitter/playground'
-" Plug 'MattesGroeger/vim-bookmarks'
-
-" Plug 'neovim/nvim-lspconfig'
-" Plug 'williamboman/nvim-lsp-installer', { 'branch': 'main' }
-" Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
-" Plug 'hrsh7th/cmp-buffer', { 'branch': 'main' }
-" Plug 'hrsh7th/cmp-path', { 'branch': 'main' }
-" Plug 'hrsh7th/cmp-cmdline', { 'branch': 'main' }
-" Plug 'hrsh7th/nvim-cmp', { 'branch': 'main' }
+" experimental
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'voldikss/vim-floaterm'
 
 " core pluging
 Plug 'tpope/vim-surround'
@@ -29,7 +22,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-vinegar'
-" Plug 'LunarWatcher/auto-pairs'
 Plug 'jiangmiao/auto-pairs'
 Plug 'flyngate/vim-closetag'
 Plug 'kana/vim-textobj-user'
@@ -39,15 +31,17 @@ Plug 'Julian/vim-textobj-variable-segment'
 " tmux integration
 Plug 'christoomey/vim-tmux-navigator'
 
-" visual
+" colors schemes
+Plug 'chriskempson/base16-vim'
 Plug 'arzg/vim-colors-xcode'
+Plug 'phanviet/sidonia'
+Plug 'iceisspetrel/monrovia'
+Plug 'sam4llis/nvim-tundra', { 'branch': 'main' }
+
+" visuals
 Plug 'ap/vim-css-color'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-emoji'
-Plug 'nightsense/snow'
-Plug 'phanviet/sidonia'
-Plug 'iceisspetrel/monrovia'
-Plug 'chriskempson/base16-vim'
 
 " navigation
 Plug 'preservim/nerdtree'
@@ -56,25 +50,25 @@ Plug 'preservim/nerdtree'
 Plug 'dyng/ctrlsf.vim'
 Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.vim/bin/fzf' }
 Plug 'junegunn/fzf.vim'
+Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
 
 " lsp / autocomplete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'ervandew/supertab'
+" Plug 'ervandew/supertab'
 
 " snippets
 Plug 'SirVer/ultisnips'
 Plug 'mattn/emmet-vim'
 
 " javascript
-Plug 'othree/yajs.vim'
-Plug 'HerringtonDarkholme/yats.vim'
-Plug 'MaxMEllon/vim-jsx-pretty'
-Plug 'samuelsimoes/vim-jsx-utils'
+" Plug 'othree/yajs.vim'
+" Plug 'HerringtonDarkholme/yats.vim'
+" Plug 'MaxMEllon/vim-jsx-pretty'
+" Plug 'samuelsimoes/vim-jsx-utils'
 
-" other programming languages
+" programming languages
 Plug 'udalov/kotlin-vim'
-" Plug 'tbastos/vim-lua'
-" Plug 'dart-lang/dart-vim-plugin'
+Plug 'adelarsq/neofsharp.vim'
 
 " file types
 " Plug 'hail2u/vim-css3-syntax'
@@ -87,159 +81,44 @@ call plug#end()
 
 set completeopt=menu,menuone,noselect
 
+" temporary nerd tree bug fix
+" https://github.com/preservim/nerdtree/issues/1321
+let g:NERDTreeMinimalMenu = 1
+
+" treesitter
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  enable = true,
+  auto_install = true,
+
+  ensure_installed = {
+    "javascript",
+    "typescript",
+    "tsx",
+    "lua",
+  },
+
+  highlight = { enable = true },
+
+  indent = { enable = true },
+
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "gnn",
+      node_incremental = "grn",
+      scope_incremental = "grc",
+      node_decremental = "grm",
+    },
+  },
+}
+EOF
+
 " c#
 autocmd FileType cs setlocal shiftwidth=4 softtabstop=4 expandtab
 
-" lua << EOF
-"   -- Setup nvim-cmp.
-"   local cmp = require'cmp'
-" 
-"   cmp.setup({
-"     snippet = {
-"       expand = function(args)
-"         vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-"         -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-"         -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-"         -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
-"       end,
-"     },
-"     mapping = {
-"       ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-"       ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-"       ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-"       ['<C-y>'] = cmp.config.disable, -- If you want to remove the default `<C-y>` mapping, You can specify `cmp.config.disable` value.
-"       ['<C-e>'] = cmp.mapping({
-"         i = cmp.mapping.abort(),
-"         c = cmp.mapping.close(),
-"       }),
-"       ['<CR>'] = cmp.mapping.confirm({ select = true }),
-"     },
-"     sources = cmp.config.sources({
-"       { name = 'nvim_lsp' },
-"       { name = 'vsnip' }, -- For vsnip users.
-"       -- { name = 'luasnip' }, -- For luasnip users.
-"       -- { name = 'ultisnips' }, -- For ultisnips users.
-"       -- { name = 'snippy' }, -- For snippy users.
-"     }, {
-"       { name = 'buffer' },
-"     })
-"   })
-" 
-"   -- Use buffer source for `/`.
-"   cmp.setup.cmdline('/', {
-"     sources = {
-"       { name = 'buffer' }
-"     }
-"   })
-" 
-"   -- Use cmdline & path source for ':'.
-"   cmp.setup.cmdline(':', {
-"     sources = cmp.config.sources({
-"       { name = 'path' }
-"     }, {
-"       { name = 'cmdline' }
-"     })
-"   })
-" 
-"   -- Setup lspconfig.
-"   -- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-"   -- require('lspconfig')[%YOUR_LSP_SERVER%].setup {
-"   --   capabilities = capabilities
-"   -- }
-" EOF
-
-" lua << EOF
-"   local lsp_installer = require("nvim-lsp-installer")
-" 
-"   lsp_installer.on_server_ready(function(server)
-"       local opts = {}
-" 
-"       -- (optional) Customize the options passed to the server
-"       -- if server.name == "tsserver" then
-"       --     opts.root_dir = function() ... end
-"       -- end
-" 
-"       -- This setup() function is exactly the same as lspconfig's setup function (:help lspconfig-quickstart)
-"       server:setup(opts)
-"       vim.cmd [[ do User LspAttachBuffers ]]
-"   end)
-" EOF
-
-" lua << EOF
-" require'nvim-treesitter.configs'.setup {
-"   ensure_installed = {
-"     "bash",
-"     "c",
-"     "c_sharp",
-"     "clojure",
-"     "cpp",
-"     "css",
-"     "dart",
-"     "dockerfile",
-"     "erlang",
-"     "go",
-"     "html",
-"     "java",
-"     "javascript",
-"     "json",
-"     "kotlin",
-"     "lua",
-"     "ocaml",
-"     "perl",
-"     "python",
-"     "r",
-"     "ruby",
-"     "rust",
-"     "scss",
-"     "svelte",
-"     "toml",
-"     "tsx",
-"     "typescript",
-"     "vim",
-"     "vue",
-"     "yaml",
-"   },
-"   highlight = {
-"     enable = true,
-"     disable = { "javascript", "tsx", "typescript" },
-"   },
-"   incremental_selection = { enable = true },
-"   indent = { enable = true },
-"   textobjects = {
-"     enable = true,
-"     select = {
-"       enable = true,
-"       lookahead = true,
-"       keymaps = {
-"         ["af"] = "@function.outer",
-"         ["if"] = "@function.inner",
-"         ["ac"] = "@class.outer",
-"         ["ic"] = "@class.inner",
-"       },
-"       move = {
-"         enable = true,
-"         set_jumps = true,
-"         goto_next_start = {
-"           ["]m"] = "@function.outer",
-"           ["]]"] = "@class.outer",
-"         },
-"         goto_next_end = {
-"           ["]M"] = "@function.outer",
-"           ["]["] = "@class.outer",
-"         },
-"         goto_previous_start = {
-"           ["[m"] = "@function.outer",
-"           ["[["] = "@class.outer",
-"         },
-"         goto_previous_end = {
-"           ["[M"] = "@function.outer",
-"           ["[]"] = "@class.outer",
-"         },
-"       },
-"     },
-"   },
-" }
-" EOF
+" c++
+autocmd FileType cpp setlocal shiftwidth=4 softtabstop=4 expandtab
 
 """"""""""""""""""""""""""""""""
 "
@@ -406,7 +285,7 @@ let mapleader = "\<space>"
 
 " vim config
 nnoremap <leader>c :e ~/.vim/nvimrc<cr>
-nnoremap <leader>C :tabnew ~/.vim/nvimrc<cr>
+nnoremap <leader>C :CocConfig<cr>
 
 " tabs
 nnoremap <m-h> gT
@@ -417,14 +296,14 @@ nnoremap <m-t> :tabnew<cr>
 " zen mode
 nnoremap <leader>z :Goyo<cr>
 
-" close all buffers
-nnoremap <leader>r :bufdo bd!<cr>
-
 " update config
 nnoremap <leader>uc :update<cr>:so ~/.vim/nvimrc<cr>
 
 " update plugins
 nnoremap <leader>up :update<cr>:so ~/.vim/nvimrc<cr>:PlugUpdate<cr>
+
+" floaterm
+nnoremap <leader>t :FloatermToggle<cr>
 
 " vim sessions
 " let g:session_dir = '~/.vim/sessions'
@@ -459,9 +338,13 @@ let NERDTreeQuitOnOpen=1
 nnoremap <c-n> :NERDTreeToggle<cr>
 nnoremap - :NERDTreeFind<cr>
 
+command! Ch :FzfLua git_branches
+
 nnoremap <leader>b :Buffers<cr>
-nnoremap <leader>h :History<cr>
+" nnoremap <leader>h :History<cr>
+nnoremap <leader>h :FzfLua oldfiles<cr>
 nnoremap <leader>g :GFiles?<cr>
+nnoremap <leader>F :Files %:p:h<cr>
 
 augroup nerdtree
   autocmd!
@@ -533,7 +416,8 @@ xmap a` af`
 " fzf
 let $BAT_THEME='OneHalfLight'
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
-nnoremap <c-p> :FZF<cr>
+" nnoremap <c-p> :FZF<cr>
+nnoremap <c-p> :FzfLua files<cr>
 
 " ultisnips
 let g:UltiSnipsSnippetDirectories=['ultisnips']
@@ -569,14 +453,23 @@ if exists('+termguicolors')
 endif
 
 " colorscheme base16-atelier-dune-light
-colorscheme xcodelight
+" colorscheme xcodelight
+" colorscheme xcodedark
+colorscheme tundra
 
 """"""""""""""""""""""""""""""""
 "
 " COC
 "
 """"""""""""""""""""""""""""""""
-
+let g:coc_global_extensions = [
+  \ "coc-tsserver",
+  \ "coc-prettier",
+  \ "coc-eslint",
+  \ "coc-sourcekit",
+  \ "coc-rust-analyzer",
+  \ "coc-clangd"
+  \ ]
 " let g:coc_node_path = '/Users/igor/.nvm/versions/node/v12.13.0/bin/node'
 
 " Use K to show documentation in preview window
@@ -589,6 +482,21 @@ function! s:show_documentation()
   endif
 endfunction
 
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1):
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
 nmap <silent> [r <Plug>(coc-diagnostic-prev)
 nmap <silent> ]r <Plug>(coc-diagnostic-next)
 nmap <silent> gd <Plug>(coc-definition)
@@ -597,8 +505,9 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 nnoremap <leader>x :CocCommand<cr>
-nnoremap <leader>k :CocAction<cr>
+nnoremap <leader>k <Plug>(coc-codeaction)
 nnoremap <leader>e :CocList extensions<cr>
+nnoremap <leader>rn <Plug>(coc-rename)
 
 vmap <leader>f <Plug>(coc-format-selected)
 nmap <leader>f :call CocAction('format')<cr>

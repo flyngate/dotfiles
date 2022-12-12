@@ -86,6 +86,9 @@ source "$HOME/.zsh.d/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 BASE16_SHELL="$HOME/.zsh.d/plugins/base16-shell"
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && { eval "$($BASE16_SHELL/profile_helper.sh)" }
 
+### z
+source "$HOME/.zsh.d/bin/z.sh"
+
 ### import all scripts from .zshrc.local
 if [ -d "$__zsh_local" ]; then
   for file in $(ls -Av1 "$__zsh_local"); do

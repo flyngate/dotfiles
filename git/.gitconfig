@@ -49,3 +49,5 @@
   path = ~/.gitconfig.local
 [use]
 	name = Igor Stroganov
+[init]
+	defaultBranch = main
