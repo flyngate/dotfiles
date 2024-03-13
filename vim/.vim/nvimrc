@@ -45,8 +45,6 @@ Plug 'preservim/nerdtree'
 
 " search
 Plug 'dyng/ctrlsf.vim'
-Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.vim/bin/fzf' }
-Plug 'junegunn/fzf.vim'
 Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
 
 " lsp / autocomplete
@@ -54,21 +52,13 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'ervandew/supertab'
 
 " snippets
-Plug 'SirVer/ultisnips'
 Plug 'mattn/emmet-vim'
-
-" javascript
-" Plug 'othree/yajs.vim'
-" Plug 'HerringtonDarkholme/yats.vim'
-" Plug 'MaxMEllon/vim-jsx-pretty'
-" Plug 'samuelsimoes/vim-jsx-utils'
 
 " programming languages
 Plug 'udalov/kotlin-vim'
 Plug 'adelarsq/neofsharp.vim'
 
 " file types
-" Plug 'hail2u/vim-css3-syntax'
 Plug 'othree/xml.vim'
 Plug 'plasticboy/vim-markdown'
 Plug 'jxnblk/vim-mdx-js'
@@ -417,14 +407,7 @@ xmap a` af`
 " fzf
 let $BAT_THEME='OneHalfLight'
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
-" nnoremap <c-p> :FZF<cr>
 nnoremap <c-p> :FzfLua files<cr>
-
-" ultisnips
-let g:UltiSnipsSnippetDirectories=['ultisnips']
-let g:UltiSnipsExpandTrigger='<c-l>'
-let g:UltiSnipsJumpForwardTrigger='<tab>'
-let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
 
 
 """"""""""""""""""""""""""""""""
@@ -468,7 +451,6 @@ let g:coc_global_extensions = [
   \ "coc-rust-analyzer",
   \ "coc-clangd"
   \ ]
-" let g:coc_node_path = '/Users/igor/.nvm/versions/node/v12.13.0/bin/node'
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -509,9 +491,6 @@ nnoremap <leader>rn <Plug>(coc-rename)
 
 vmap <leader>f <Plug>(coc-format-selected)
 nmap <leader>f :call CocActionAsync('format')<cr>
-
-" vmap <leader>f :CocCommand prettier.formatFile<cr>
-" nmap <leader>f :CocCommand prettier.formatFile<cr>
 
 
 """"""""""""""""""""""""""""""""
@@ -562,9 +541,6 @@ endif
 " INIT
 "
 """"""""""""""""""""""""""""""""
-
-" include vimrc.local if exists for system-specific setup
-source $HOME/.vim/vimrc.local
 
 " use this variable to avoid applying settings twice when
 " reloading vimrc with :so ~/.vim/vimrc

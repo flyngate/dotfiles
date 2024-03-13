@@ -1,9 +1,8 @@
 ### environment variables
 export EDITOR="vim"
-export PATH="$PATH:$HOME/.scripts"
-export LANG=en_US
+export PATH="$HOME/.scripts:/opt/homebrew/bin:$PATH"
+export LANG=en_US.UTF-8
 export TERM="screen-256color"
-
 export FZF_DEFAULT_COMMAND="ag -g ''"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
@@ -37,9 +36,9 @@ function zshrc() {
 
   ZSH_LOCAL="$HOME/.zsh.local"
 
-  if [ -d "$__zsh_local" ]; then
-    for file in $(ls -Av1 "$__zsh_local"); do
-      source "$__zsh_local/$file"
+  if [ -d "$ZSH_LOCAL" ]; then
+    for file in $(ls -Av1 "$ZSH_LOCAL"); do
+      source "$ZSH_LOCAL/$file"
     done
   fi
 
