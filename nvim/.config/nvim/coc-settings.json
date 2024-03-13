@@ -1,38 +1,19 @@
 {
   "suggest.noselect": true,
   "coc.preferences.formatOnSaveFiletypes": [
-    "json",
-    "html",
-    "css",
-    "scss",
-    "mdx"
-  ],
-  "coc.preferences.formatOnSaveFiletypes.0": [
-    "html",
-    "scss",
     "javascript",
     "javascriptreact",
     "typescript",
     "typescriptreact",
+    "json",
+    "html",
     "css",
-    "markdown.0",
+    "markdown",
     "mdx"
   ],
-  "typescript.format.enabled": false,
   "list.source.grep.command": "ag",
+  "languageserver": {},
+  "typescript.format.enabled": false,
   "clangd.fallbackFlags": ["-std=c++17"],
-  "languageserver": {
-    "nim": {
-      "command": "nimlsp",
-      "filetypes": ["nim"],
-      "trace.server": "verbose"
-    },
-    "csharp-ls": {
-      "// command": "csharp-ls",
-      "command": "/Users/igor/code/csharp-language-server/src/CSharpLanguageServer/bin/Debug/net7.0/CSharpLanguageServer",
-      "args": ["--loglevel", "warning"],
-      "filetypes": ["cs"],
-      "rootPatterns": ["*.csproj", ".vim/", ".git/", ".hg/"]
-    }
-  }
+  "clangd.args": []
 }

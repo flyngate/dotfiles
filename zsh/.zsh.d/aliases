@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 
 # platform specific `ls` alias
 if [[ $platform == 'linux' ]]; then
@@ -14,7 +15,28 @@ function g {
     git status --short --branch
   fi
 }
+
 compdef g='git'
+
+function __ch_try() {
+  local branch_name=$(git branch --list | grep "$1" | head -n 1)
+  if [[ -n "$branch_name" ]]; then
+    git checkout "${branch_name:2:1000}"
+    echo 1
+  fi
+}
+
+function ch() {
+  local name="$1"
+  local result=$(__ch_try "$CH_PREFIX-$name")
+  if [[ -z "$result" ]]; then
+    result=$(__ch_try "$name")
+  fi
+  if [[ -z "$result" ]]; then
+    echo "Can't find branch"
+    return 1
+  fi
+}
 
 # git aliases
 alias gs="git status"
@@ -24,6 +46,7 @@ alias ga="git add --all "
 alias gc="git commit -m "
 alias go="git checkout "
 alias rebase-onto-master="git fetch && git rebase origin/master"
+alias commits-by-author="git shortlog --summary --numbered --all --no-merges"
 alias root='cd $(git rev-parse --show-cdup)'
 
 # config files aliases
@@ -35,7 +58,7 @@ function conf {
     "zsh.aliases" )
       nvim ~/.zsh.d/aliases
       ;;
-    nvim )
+    vim | nvim )
       nvim ~/.vim/nvimrc
     ;;
   esac
@@ -57,7 +80,6 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
-alias django="python manage.py"
 alias c="docker-compose"
 alias session="tmux new-session -s"
 alias tcd="tmux attach-session -c"

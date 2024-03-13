@@ -4,14 +4,11 @@
 "
 """"""""""""""""""""""""""""""""
 
-" To enable C# support:
-"
-"     dotnet tool install --global csharp-ls
-
 call plug#begin('~/.vim/plugins')
 
 " experimental
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'voldikss/vim-floaterm'
 
 " core pluging
@@ -81,10 +78,6 @@ call plug#end()
 
 set completeopt=menu,menuone,noselect
 
-" temporary nerd tree bug fix
-" https://github.com/preservim/nerdtree/issues/1321
-let g:NERDTreeMinimalMenu = 1
-
 " treesitter
 lua << EOF
 require'nvim-treesitter.configs'.setup {
@@ -95,6 +88,7 @@ require'nvim-treesitter.configs'.setup {
     "javascript",
     "typescript",
     "tsx",
+    "python",
     "lua",
   },
 
@@ -105,10 +99,20 @@ require'nvim-treesitter.configs'.setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "gnn",
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
+      init_selection = "<m-o>",
+      node_incremental = "<m-o>",
+    },
+  },
+
+  textobjects = {
+    swap = {
+      enable = true,
+      swap_next = {
+        ["]s"] = "@parameter.inner",
+      },
+      swap_previous = {
+        ["[s"] = "@parameter.inner",
+      },
     },
   },
 }
@@ -116,9 +120,6 @@ EOF
 
 " c#
 autocmd FileType cs setlocal shiftwidth=4 softtabstop=4 expandtab
-
-" c++
-autocmd FileType cpp setlocal shiftwidth=4 softtabstop=4 expandtab
 
 """"""""""""""""""""""""""""""""
 "
@@ -452,9 +453,6 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
-" colorscheme base16-atelier-dune-light
-" colorscheme xcodelight
-" colorscheme xcodedark
 colorscheme tundra
 
 """"""""""""""""""""""""""""""""
@@ -510,7 +508,7 @@ nnoremap <leader>e :CocList extensions<cr>
 nnoremap <leader>rn <Plug>(coc-rename)
 
 vmap <leader>f <Plug>(coc-format-selected)
-nmap <leader>f :call CocAction('format')<cr>
+nmap <leader>f :call CocActionAsync('format')<cr>
 
 " vmap <leader>f :CocCommand prettier.formatFile<cr>
 " nmap <leader>f :CocCommand prettier.formatFile<cr>
