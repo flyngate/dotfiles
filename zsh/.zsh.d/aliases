@@ -1,5 +1,25 @@
 #!/usr/bin/env zsh
 
+alias s="sudo"
+alias v="nvim"
+alias grep="grep --color=auto"
+alias df="df -h"
+alias du="du -h"
+alias ls="ls --color"
+alias la="ls -a"
+alias lla="ls -la"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias c="docker-compose"
+alias session="tmux new-session -s"
+alias tcd="tmux attach-session -c"
+
+function mkdircd {
+  mkdir -p "$1" && cd "$1";
+}
+
 # platform specific `ls` alias
 if [[ $platform == 'linux' ]]; then
   alias ls='ls --color=auto'
@@ -7,6 +27,7 @@ elif [[ $platform == 'freebsd' || $platform == 'macos' ]]; then
   alias ls='ls -G'
 fi
 
+# git aliases
 # 'g' alias for git
 function g {
   if [[ $# > 0 ]]; then
@@ -38,7 +59,6 @@ function ch() {
   fi
 }
 
-# git aliases
 alias gs="git status"
 alias gd="git diff"
 alias gds="git diff --staged"
@@ -65,22 +85,3 @@ function conf {
 }
 alias zshconf="nvim ~/.zshrc"
 alias zshdconf="nvim ~/.zsh.d"
-
-function mkdircd {
-  mkdir -p "$1" && cd "$1";
-}
-
-alias s="sudo"
-alias grep="grep --color=auto"
-alias df="df -h"
-alias du="du -h"
-alias la="ls -a"
-alias lla="ls -la"
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias c="docker-compose"
-alias session="tmux new-session -s"
-alias tcd="tmux attach-session -c"
-

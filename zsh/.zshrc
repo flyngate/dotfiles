@@ -58,7 +58,10 @@ function zshrc() {
   [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && { eval "$($BASE16_SHELL/profile_helper.sh)" }
 
   ### z
-  source "$HOME/.zsh.d/bin/z.sh"
+  # source "$HOME/.zsh.d/bin/z.sh"
+
+  ### zoxide
+  type zoxide > /dev/null && eval "$(zoxide init zsh)"
 
   ### fzf
   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
