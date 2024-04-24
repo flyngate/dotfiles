@@ -13,8 +13,11 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias c="docker-compose"
-alias session="tmux new-session -s"
 alias tcd="tmux attach-session -c"
+
+function session {
+  tmux new-session ${1:+-s$1} ${2:+-c$2}
+}
 
 function mkdircd {
   mkdir -p "$1" && cd "$1";
@@ -67,7 +70,7 @@ alias gc="git commit -m "
 alias go="git checkout "
 alias rebase-onto-master="git fetch && git rebase origin/master"
 alias commits-by-author="git shortlog --summary --numbered --all --no-merges"
-alias root='cd $(git rev-parse --show-cdup)'
+alias root='cd $(echo $(git rev-parse --show-cdup 2>/dev/null) | sed 's/^$/./')'
 
 # config files aliases
 function conf {
@@ -75,12 +78,15 @@ function conf {
     zsh )
       nvim ~/.zshrc
       ;;
-    "zsh.aliases" )
+    aliases )
       nvim ~/.zsh.d/aliases
       ;;
-    vim | nvim )
-      nvim ~/.vim/nvimrc
-    ;;
+    vim )
+      nvim ~/.vim/vimrc
+      ;;
+    nvim )
+      nvim ~/.config/nvim/init.vim
+      ;;
   esac
 }
 alias zshconf="nvim ~/.zshrc"
