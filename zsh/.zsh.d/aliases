@@ -14,6 +14,7 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias c="docker-compose"
 alias tcd="tmux attach-session -c"
+alias macos-run-any-app="sudo spctl --master-disable"
 
 function session {
   tmux new-session ${1:+-s$1} ${2:+-c$2}
@@ -67,7 +68,6 @@ alias gd="git diff"
 alias gds="git diff --staged"
 alias ga="git add --all "
 alias gc="git commit -m "
-alias go="git checkout "
 alias rebase-onto-master="git fetch && git rebase origin/master"
 alias commits-by-author="git shortlog --summary --numbered --all --no-merges"
 alias root='cd $(echo $(git rev-parse --show-cdup 2>/dev/null) | sed 's/^$/./')'

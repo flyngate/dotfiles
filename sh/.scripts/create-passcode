@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+
+# create a passcode using the diceware word list
+# source: https://theworld.com/~reinhold/diceware.html
+
+import sys
+from os import path
+from random import choices
+
+CURRENT_DIR = path.dirname(path.realpath(__file__))
+DICT_PATH = path.join(CURRENT_DIR, 'diceware.wordlist.asc')
+DICE = ['1', '2', '3', '4', '5', '6']
+KEY_LEN = 5
+DEFAULT_PASSCODE_LEN = 4
+
+with open(DICT_PATH) as f:
+    lines = f.readlines()
+
+def choose_one():
+    key = ''.join(choices(DICE, k = KEY_LEN))
+    target_line = filter(lambda line: line.startswith(key), lines)
+    target_line = next(target_line)
+    target_line = target_line.strip()
+
+    return target_line.split('\t')[1]
+
+if __name__ == '__main__':
+    n = DEFAULT_PASSCODE_LEN
+
+    if len(sys.argv) > 1:
+        if sys.argv[1] == '--help':
+            print('Usage: create-passcode [number_of_words]')
+            sys.exit(0)
+
+        n = int(sys.argv[1])
+
+    result = ' '.join([choose_one() for _ in range(0, n)])
+
+    print(result)

@@ -11,11 +11,13 @@ samba_server() {
 }
 
 case "$1" in
-  http )
-    http_server $2 ;;
-  samba )
+  "samba" )
     samba_server $2 ;;
+  "http" )
+    http_server $2 ;;
+  "--help" )
+    echo -e "usage: serve [http] <port>\n       serve samba" ;;
   * )
-    echo -e "usage: serve http <port>\n       serve samba" ;;
+    http_server $1 ;;
 esac
 

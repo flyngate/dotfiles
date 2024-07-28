@@ -38,6 +38,9 @@
   default = current
   followTags = true
 
+[pull]
+  rebase = true
+
 [pager]
   diff = ~/.gitconfig.d/diff-so-fancy/diff-so-fancy | less --tabs=4 -RFX
   show = ~/.gitconfig.d/diff-so-fancy/diff-so-fancy | less --tabs=4 -RFX

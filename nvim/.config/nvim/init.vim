@@ -4,6 +4,7 @@ lua << EOF
   require("init")
 EOF
 
+syntax on
 silent! colorscheme tundra
 
 " bubble lines / visual selections up and down

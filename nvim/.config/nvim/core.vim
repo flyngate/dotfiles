@@ -1,5 +1,4 @@
 filetype plugin indent on          " filetype detection and settings
-syntax on                          " syntax highlighting
 silent! runtime macros/matchit.vim " matchit comes with Vim
 set nocompatible                   " not strictly necessary but useful in some scenarii
 set backspace=indent,eol,start     " let the backspace key work "normally"
@@ -20,7 +19,7 @@ set scrolloff=5                    " the minimum number of lines to keep above a
 
 " show line numbers
 set number
-set relativenumber
+" set relativenumber
 
 " indentation
 set expandtab

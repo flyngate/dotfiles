@@ -33,7 +33,7 @@ return {
 
       harpoon.setup()
 
-      vim.keymap.set("n", "<leader>h", function() harpoon:list():append() end)
+      vim.keymap.set("n", "<leader>h", function() harpoon:list():prepend() end)
       vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 
       vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end)
@@ -43,6 +43,10 @@ return {
 
       vim.keymap.set("n", "[h", function() harpoon:list():prev() end)
       vim.keymap.set("n", "]h", function() harpoon:list():next() end)
+
+      vim.api.nvim_create_user_command('HarpoonClear', function()
+        harpoon:list():clear()
+      end, { desc = "Clear harpoon list" })
     end
   },
   {
@@ -124,6 +128,7 @@ return {
       filters = {
         enable = true,
         git_ignored = false,
+        custom = { '.DS_Store' }
       },
       renderer = {
         add_trailing = true,
@@ -178,6 +183,7 @@ return {
         "yaml",
         "toml",
         "markdown",
+        "gleam",
       },
 
       incremental_selection = {
@@ -237,6 +243,7 @@ return {
 
   -- colorscheme
   { 'sam4llis/nvim-tundra' },
+  { 'EdenEast/nightfox.nvim' },
 
   -- navigation and search
   {
