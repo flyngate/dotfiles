@@ -1,4 +1,4 @@
-## EXAMPLES
+## Installation
 
 **Install default.recipe**
 
@@ -12,26 +12,28 @@
 
     $ ./install.sh git
 
-**Multiple targets at once**
+**Multiple targets**
 
     $ ./install.sh default.recipe macos.recipe git
 
 **Copy instead of making symlinks**
 
-    $ ./install.sh git -c
+    $ ./install.sh -c git
 
 **Provide verbose output**
 
     $ ./install.sh -v
 
-## REMOTE
+## Install dotfiles without git
 
-Run one of the following commands on remote machine. This approach creates only copies, not symlinks, in home directory.
+This approach doesn't support symlinks. `install.sh` would create copies of all files as if the `-c` flag was specified.
 
-_curl_
+**Install default.recipe**
 
-    $ sh -c "`curl -fsSL https://raw.github.com/flyngate/dotfiles/master/install.sh -r [ARGUMENTS]`"
+    $ curl -fL --no-progress-meter https://raw.github.com/flyngate/dotfiles/master/install.sh | bash
+    $ wget -qO - --no-check-certificate https://raw.githubusercontent.com/flyngate/dotfiles/master/install.sh | bash
 
-_wget_
+**Pass arguments to `install.sh`**
 
-    $ sh -c "`wget -O - --no-check-certificate https://raw.githubusercontent.com/flyngate/dotfiles/master/install.sh -r [ARGUMENTS]`"
+    $ curl -fL --no-progress-meter https://raw.github.com/flyngate/dotfiles/master/install.sh | bash -s -- macos.recipe
+    $ wget -qO - --no-check-certificate https://raw.githubusercontent.com/flyngate/dotfiles/master/install.sh | bash -s -- macos.recipe
