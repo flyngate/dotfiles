@@ -7,6 +7,12 @@ EOF
 syntax on
 silent! colorscheme tundra
 
+" keymap for russion language
+" switch lang with ctrl+^ in insert mode
+set keymap=russian-jcukenwin
+set iminsert=0
+set imsearch=0
+
 " bubble lines / visual selections up and down
 " depends on `tpope/vim-unimpaired`
 nmap <m-k> [e==
