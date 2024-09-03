@@ -2,7 +2,8 @@
 export EDITOR="vim"
 export PATH="$HOME/.scripts:/opt/homebrew/bin:$PATH"
 export LANG=en_US.UTF-8
-export TERM="screen-256color"
+# export TERM="screen-256color"
+export TERM="xterm-256color"
 export FZF_DEFAULT_COMMAND="ag -g ''"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
@@ -35,6 +36,10 @@ function zshrc() {
   . $HOME/.zsh.d/key_bindings
 
   local ZSH_LOCAL="$HOME/.zsh.local"
+
+  if [ -f "$ZSH_LOCAL" ]; then
+    source "$ZSH_LOCAL"
+  fi
 
   if [ -d "$ZSH_LOCAL" ]; then
     for file in $(ls -Av1 "$ZSH_LOCAL"); do

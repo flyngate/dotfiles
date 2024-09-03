@@ -7,7 +7,7 @@ __CWD_PRE="%F{green}"
 __CWD_POST="%f"
 __REPO_PRE="%F{green}"
 __REPO_POST="$f"
-__BRANCH_PRE="%F{black}%B"
+__BRANCH_PRE="%F{white}%B"
 __BRANCH_POST="%b%f"
 
 setopt prompt_subst

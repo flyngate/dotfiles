@@ -62,7 +62,7 @@ let g:netrw_altv=1
 " and the buffer has no changes unsaved
 set autoread
 augroup checktime
-  au CursorHold * checktime
+  au CursorHold * silent! checktime
 augroup END
 
 " split windows config
