@@ -1,6 +1,6 @@
 ### environment variables
 export EDITOR="vim"
-export PATH="$HOME/.scripts:/opt/homebrew/bin:$PATH"
+export PATH="$HOME/.scripts:/opt/homebrew/bin:/usr/sbin:$PATH"
 export LANG=en_US.UTF-8
 # export TERM="screen-256color"
 export TERM="xterm-256color"
