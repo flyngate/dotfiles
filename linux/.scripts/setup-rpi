@@ -1,0 +1,118 @@
+#!/bin/bash
+
+# configuration scripts for raspberry pi os based on debian 12 bookworm
+
+set -e
+
+USAGE="Usage: setup-rpi [essentials|all|file-server]"
+FIRMWARE_CONFIG="/boot/firmware/config.txt"
+
+function setup_essentials() {
+  # increase soft temperature limit to avoid CPU throttling on Raspberry PI 3B+
+  if [ -z $(grep temp_soft_limit "$FIRMWARE_CONFIG") ]; then
+    sudo sh -c "echo \"\ntemp_soft_limit=70\" >> $FIRMWARE_CONFIG"
+  else
+    sudo sed -i 's/temp_soft_limit=.*/temp_soft_limit=70/' /boot/firmware/config.txt
+  fi
+
+  # update the system
+  sudo apt update
+  sudo apt upgrade -y
+  sudo apt dist-upgrade -y
+
+  # install essential tools and packages
+  sudo apt install -y locales zsh tmux vim fzf silversearcher-ag
+
+  # generate locales
+  sudo sh -c 'echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen'
+  sudo sh -c 'echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen'
+  sudo locale-gen
+}
+
+function setup_all() {
+  setup_essentials
+
+  # install node
+  curl -fsSL https://deb.nodesource.com/setup_22.x -o /tmp/nodesource-setup.sh
+  sudo bash /tmp/nodesource-setup.sh
+  rm /tmp/nodesource-setup.sh
+  sudo apt-get install -y nodejs
+
+  # install latest neovim
+  sudo apt-get install -y ninja-build gettext cmake unzip curl
+  cd /tmp
+  git clone --depth=1 https://github.com/neovim/neovim
+  cd neovim
+  make CMAKE_BUILD_TYPE=Release
+  sudo make install
+  cd /
+  rm -rf /tmp/neovim
+
+  # install rust
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+  # install docker
+  # curl -sSL https://get.docker.com | sh
+  # sudo apt install -y docker-compose
+  # sudo usermod -a -G docker $USER
+}
+
+function setup_file_server() {
+  sudo apt install -y deluged deluge-web nginx
+
+  # configure samba
+  # user: samba
+  # password: 111111
+  # share: /srv
+  sudo sh -c "cat >/etc/samba/smb.conf" <<-EOF
+[pi]
+path = /srv
+writeable = yes
+browseable = yes
+public = yes
+EOF
+  sudo useradd samba
+  sudo sh -c "(echo 111111; echo 111111) | smbpasswd -s -a samba"
+  sudo systemctl restart smbd.service
+
+  # configure deluge
+  # web password: 111111
+  mkdir -p ~/.config/deluge
+  sudo sed -i 's/\"download_location\": .*$/\"download_location\": \"\/srv\",/' /var/lib/deluged/config/core.conf
+  local deluge_auth="localclient:b179aa29269589ea60fb3c432df3ff2604904f55:10"
+  sudo sh -c "echo $deluge_auth > /var/lib/deluged/config/auth"
+  sudo systemctl restart deluged.service
+
+  # configure nginx
+  sudo sh -c "cat >>/etc/nginx/sites-available/main" <<-EOF
+server {
+  listen 80 default_server;
+  listen [::]:80 default_server;
+
+  location /srv {
+    alias /srv;
+    autoindex on;
+  }
+
+  location /deluge/ {
+    proxy_pass http://localhost:8112/;
+    proxy_set_header X-Deluge-Base "/deluge/";
+    include proxy_params;
+    add_header X-Frame-Options SAMEORIGIN;
+  }
+}
+EOF
+  sudo rm -f /etc/nginx/sites-enabled/default
+  sudo ln -s /etc/nginx/sites-available/main /etc/nginx/sites-enabled/main
+  sudo systemctl restart nginx.service
+}
+
+if [[ "$1" == "essentials" ]]; then
+  setup_essentials
+elif [[ "$1" == "all" ]]; then
+  setup_all
+elif [[ "$1" == "file-server" ]]; then
+  setup_file_server
+else
+  echo "$USAGE"
+fi
