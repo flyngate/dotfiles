@@ -8,10 +8,10 @@ import argparse
 import tomllib
 from shutil import which
 
-HOME = expanduser("~")
-CONFIG_PATH = join(HOME, '.config', 'backups.toml')
-BACKUPS_PATH = join(HOME, '.backups')
-OBSIDIAN_PATH = join(HOME, 'Documents/obsidian')
+CONFIG_PATH_RAW = '~/.config/backups/config'
+CONFIG_PATH = expanduser(CONFIG_PATH_RAW)
+BACKUPS_PATH = expanduser('~/.backups/')
+OBSIDIAN_PATH = expanduser('~/Documents/obsidian/')
 REMOTE_BACKUPS_PATH = '~/.backups'
 GOOGLE_DRIVE_BACKUPS_PATH = 'backups'
 ASCII = """ _________________
@@ -25,7 +25,9 @@ ASCII = """ _________________
 | DD |       |   V|
 |____|_______|____|
         """
-USAGE = """backups archive      - Archive obsidian voults to backups directory
+USAGE = f"""config file: {CONFIG_PATH_RAW}
+
+backups archive      - Archive obsidian voults to backups directory
         sync ssh     - Sync backups with a remote server over SSH
         sync drive   - Sync backups with Google Drive"""
 
@@ -67,7 +69,7 @@ def backup_obsidian():
     password = Config.archive_password
 
     if not password:
-        print(f'Please set "archive_password" variable in {CONFIG_PATH}')
+        print(f'Please set "archive_password" variable in {CONFIG_PATH_RAW}')
         exit(1)
     else:
         placeholder = 'x' * len(password)
