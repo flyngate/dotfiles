@@ -61,18 +61,42 @@ function setup_file_server() {
   sudo apt install -y deluged deluge-web nginx
 
   # configure samba
-  # user: samba
-  # password: 111111
+  #
+  # user: guest
   # share: /srv
+  #
+  # user: priv
+  # password: should be set manually: `sudo smbpasswd -a priv`
+  # share: /priv
   sudo sh -c "cat >/etc/samba/smb.conf" <<-EOF
-[pi]
+[global]
+server string = pi
+disable netbios = yes
+
+[srv]
 path = /srv
 writeable = yes
 browseable = yes
 public = yes
+guest ok = yes
+guest account = guest
+
+[priv]
+path = /priv
+writeable = yes
+browseable = no
+public = no
+guest ok = no
+valid users = priv
 EOF
-  sudo useradd samba
-  sudo sh -c "(echo 111111; echo 111111) | smbpasswd -s -a samba"
+  sudo mkdir -p /srv/
+  sudo mkdir -p /priv/
+  sudo chmod -R a+rw /srv
+  sudo chmod -R a+rw /priv
+  sudo useradd -r -s /bin/false guest
+  sudo useradd -r -s /bin/false priv
+  sudo sh -c "(echo; echo) | smbpasswd -s -a guest"
+  sudo systemctl enable smbd.service
   sudo systemctl restart smbd.service
 
   # configure deluge
@@ -88,6 +112,7 @@ EOF
 server {
   listen 80 default_server;
   listen [::]:80 default_server;
+  charset utf-8;
 
   location /srv {
     alias /srv;
