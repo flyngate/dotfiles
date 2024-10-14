@@ -31,15 +31,13 @@ function zshrc() {
   stty -ixon
 
   # import zsh configuration files
-  . $HOME/.zsh.d/prompts/prompt2
-  . $HOME/.zsh.d/aliases
-  . $HOME/.zsh.d/key_bindings
+  . "$HOME/.zsh.d/prompts/prompt2"
+  . "$HOME/.zsh.d/aliases"
+  . "$HOME/.zsh.d/key_bindings"
 
   local ZSH_LOCAL="$HOME/.zsh.local"
 
-  if [ -f "$ZSH_LOCAL" ]; then
-    source "$ZSH_LOCAL"
-  fi
+  [ -f "$ZSH_LOCAL" ] && source "$ZSH_LOCAL"
 
   if [ -d "$ZSH_LOCAL" ]; then
     for file in $(ls -Av1 "$ZSH_LOCAL"); do
@@ -62,6 +60,9 @@ function zshrc() {
 
   ### fzf
   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+  ### zk
+  export ZK_NOTEBOOK_DIR="$HOME/Documents/notes/zk"
 }
 
 zshrc

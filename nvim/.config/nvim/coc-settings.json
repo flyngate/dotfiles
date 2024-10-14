@@ -23,5 +23,6 @@
   "typescript.format.enabled": false,
   "clangd.fallbackFlags": ["-std=c++20", "-I/opt/homebrew/include"],
   "clangd.arguments": [],
-  "svelte.enable-ts-plugin": true
+  "svelte.enable-ts-plugin": true,
+  "snippets.ultisnips.pythonPrompt": false
 }

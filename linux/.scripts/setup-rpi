@@ -21,7 +21,7 @@ function setup_essentials() {
   sudo apt dist-upgrade -y
 
   # install essential tools and packages
-  sudo apt install -y locales zsh tmux vim fzf silversearcher-ag
+  sudo apt install -y locales dnsutils zsh tmux vim fzf silversearcher-ag
 
   # generate locales
   sudo sh -c 'echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen'
@@ -29,16 +29,8 @@ function setup_essentials() {
   sudo locale-gen
 }
 
-function setup_all() {
-  setup_essentials
-
-  # install node
-  curl -fsSL https://deb.nodesource.com/setup_22.x -o /tmp/nodesource-setup.sh
-  sudo bash /tmp/nodesource-setup.sh
-  rm /tmp/nodesource-setup.sh
-  sudo apt-get install -y nodejs
-
-  # install latest neovim
+function install_neovim() {
+  # download and build the latest neovim
   sudo apt-get install -y ninja-build gettext cmake unzip curl
   cd /tmp
   git clone --depth=1 https://github.com/neovim/neovim
@@ -47,14 +39,31 @@ function setup_all() {
   sudo make install
   cd /
   rm -rf /tmp/neovim
+}
 
-  # install rust
+function install_node() {
+  curl -fsSL https://deb.nodesource.com/setup_22.x -o /tmp/nodesource-setup.sh
+  sudo bash /tmp/nodesource-setup.sh
+  rm /tmp/nodesource-setup.sh
+  sudo apt-get install -y nodejs
+}
+
+function install_rust() {
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+}
 
-  # install docker
-  # curl -sSL https://get.docker.com | sh
-  # sudo apt install -y docker-compose
-  # sudo usermod -a -G docker $USER
+function install_docker() {
+  curl -sSL https://get.docker.com | sh
+  sudo apt install -y docker-compose
+  sudo usermod -a -G docker $USER
+}
+
+function setup_all() {
+  setup_essentials
+  install_neovim
+  install_node
+  install_rust
+  install_docker
 }
 
 function setup_file_server() {
@@ -62,7 +71,8 @@ function setup_file_server() {
 
   # configure samba
   #
-  # user: guest
+  # user: srv
+  # password: 1111
   # share: /srv
   #
   # user: priv
@@ -72,14 +82,24 @@ function setup_file_server() {
 [global]
 server string = pi
 disable netbios = yes
+vfs objects = fruit streams_xattr  
+fruit:metadata = stream
+fruit:model = MacSamba
+fruit:veto_appledouble = no
+fruit:nfs_aces = no
+fruit:wipe_intentionally_left_blank_rfork = yes 
+fruit:delete_empty_adfiles = yes 
+fruit:posix_rename = yes
 
 [srv]
 path = /srv
+read only = no
 writeable = yes
 browseable = yes
 public = yes
-guest ok = yes
-guest account = guest
+guest ok = no
+# guest account = guest
+valid users = srv
 
 [priv]
 path = /priv
@@ -93,9 +113,11 @@ EOF
   sudo mkdir -p /priv/
   sudo chmod -R a+rw /srv
   sudo chmod -R a+rw /priv
-  sudo useradd -r -s /bin/false guest
+  # sudo useradd -r -s /bin/false guest
+  sudo useradd -r -s /bin/false srv
   sudo useradd -r -s /bin/false priv
-  sudo sh -c "(echo; echo) | smbpasswd -s -a guest"
+  # sudo sh -c "(echo; echo) | smbpasswd -s -a guest"
+  sudo sh -c "(echo 1111; echo 1111) | smbpasswd -s -a srv"
   sudo systemctl enable smbd.service
   sudo systemctl restart smbd.service
 
@@ -108,7 +130,7 @@ EOF
   sudo systemctl restart deluged.service
 
   # configure nginx
-  sudo sh -c "cat >>/etc/nginx/sites-available/main" <<-EOF
+  sudo sh -c "cat >/etc/nginx/sites-available/main" <<-EOF
 server {
   listen 80 default_server;
   listen [::]:80 default_server;
@@ -130,6 +152,61 @@ EOF
   sudo rm -f /etc/nginx/sites-enabled/default
   sudo ln -s /etc/nginx/sites-available/main /etc/nginx/sites-enabled/main
   sudo systemctl restart nginx.service
+}
+
+function setup_cut_the_internet() {
+  sudo apt install -y arpspoof
+
+  sudo mkdir -p /usr/local/bin
+  sudo sh -c "cat >/usr/local/bin/cut-the-internet" <<-EOF
+#!/bin/bash
+
+ROUTER="192.168.1.1"
+DEVICES=\$(cat /usr/local/etc/cut-the-internet.conf | awk '!/^ *#/ { print $1 }')
+LOCAL_NETWORK_DEVICES=\$(arp -a | grep -v '^?')
+IP_ADDRESSES=()
+
+for device in \$DEVICES; do
+  if [[ "\$device" =~ ':' ]]; then
+    ip=\$(echo "\$LOCAL_NETWORK_DEVICES" | grep "\$device" | awk '{ print $2 }' | tr -d '()')
+  else
+    ip="\$device"
+  fi
+
+  if [[ -z "\$ip" ]]; then
+    echo "Warning: can't find "\$device" in the local network. Skipping..."
+  else
+    IP_ADDRESSES+=("\$ip")
+  fi
+done
+
+echo "Blocking the internet for: \$(sed 's/\s*$//; s/ /, /g' <<< "\${IP_ADDRESSES[@]}")"
+echo
+
+for ip in \${IP_ADDRESSES[@]}; do
+  arpspoof -i wlan0 -t "\$ip" "\$ROUTER" &
+done
+
+wait
+EOF
+  sudo chmod +x /usr/local/bin/cut-the-internet
+
+  sudo sh -c "cat >/usr/local/etc/cut-the-internet.conf" <<-EOF
+iphone.home
+ipad.home
+EOF
+
+  sudo sh -c "cat >/usr/lib/systemd/system/cut-the-internet.service" <<-EOF
+[Unit]
+Description=Cut the internet service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/cut-the-internet
+
+[Install]
+WantedBy=multi-user.target
+EOF
 }
 
 if [[ "$1" == "essentials" ]]; then

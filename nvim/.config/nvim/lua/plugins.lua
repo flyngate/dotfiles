@@ -343,6 +343,10 @@ return {
         nmap <silent> <leader>rn <Plug>(coc-rename)
         vmap <silent> <leader>f <Plug>(coc-format-selected)
         nmap <silent> <leader>f :call CocActionAsync('format')<cr>
+
+        " coc-snippets
+        let g:coc_snippet_next = '<c-j>'
+        let g:coc_snippet_prev = '<c-k>'
         ]]
     end,
   },
