@@ -1,0 +1,11 @@
+#!/bin/sh
+
+input="$1"
+output="$(basename "$input" .pdf)-optimized.pdf"
+
+if [[ -z "$1" ]]; then
+  echo "usage: optimize-scanned-pdf document.pdf"
+  exit
+fi
+
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile="$output" "$input"

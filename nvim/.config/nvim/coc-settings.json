@@ -1,4 +1,5 @@
 {
+  "inlayHint.enable": false,
   "suggest.noselect": true,
   "coc.preferences.formatOnSaveFiletypes": [
     "javascript",
@@ -18,6 +19,10 @@
       "args": ["lsp"],
       "filetypes": ["gleam"],
       "rootPatterns": ["gleam.toml", ".git"]
+    },
+    "zls": {
+      "command": "zls",
+      "filetypes": ["zig", "zon"]
     }
   },
   "typescript.format.enabled": false,

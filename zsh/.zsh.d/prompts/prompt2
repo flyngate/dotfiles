@@ -13,7 +13,7 @@ __BRANCH_POST="%b%f"
 setopt prompt_subst
 
 PROMPT=' $(__prompt_ssh)$__HELLO_PRE$(__prompt_hello)$__HELLO_POST '
-RPROMPT='$(__prompt_git)'
+# RPROMPT='$(__prompt_git)'
 
 __prompt_hello() {
   case `whoami` in

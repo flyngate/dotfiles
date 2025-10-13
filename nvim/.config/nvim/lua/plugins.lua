@@ -1,5 +1,6 @@
 return {
   -- experimental
+  { 'vim-crystal/vim-crystal' },
   {
     'voldikss/vim-floaterm',
     keys = {
@@ -110,6 +111,8 @@ return {
     },
     opts = {
       filesystem_watchers = {
+        enable = true,
+        debounce_delay = 50,
         ignore_dirs = {
           "node_modules"
         },
@@ -294,7 +297,8 @@ return {
           \ "coc-eslint",
           \ "coc-clangd",
           \ "coc-rust-analyzer",
-          \ "coc-sourcekit"
+          \ "coc-sourcekit",
+          \ "coc-zig"
         \ ]
 
         " having longer updatetime (default is 4000 ms = 4s) leads to noticeable

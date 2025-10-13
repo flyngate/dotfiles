@@ -28,7 +28,7 @@ sub is_vertical_video() {
 
 sub encode_to_mp4() {
   my ($src, $dest) = @_;
-  my $scale = &is_vertical_video($src) ? "720:-1" : "-1:720";
+  my $scale = &is_vertical_video($src) ? "720:-2" : "-2:720";
   `ffmpeg -y -i "$src" \\
           -c:v libx264 -preset slow -crf 22 -vf scale=$scale \\
           -c:a aac "$dest"`;
@@ -45,19 +45,17 @@ if (not defined $ARGV[0]) {
 
 my $raw_dir = $ARGV[0];
 my $dir = abs_path($raw_dir);
-my $backup_dir = "$dir/MOV";
+my $out_dir = "$dir/mp4";
 
 my @mov_files = sort(&list_files_with_extension($dir, "mov"));
 
-if (not -d $backup_dir) {
-  mkdir $backup_dir or die "Can't create $backup_dir";  
+if (not -d $out_dir) {
+  mkdir $out_dir or die "Can't create $out_dir";  
 }
 
 foreach my $name (@mov_files) {
   my $src = "$dir/$name";
-  my $dest = $dir . "/" . ($name =~ s/mov$/mp4/igr);
-  my $backup = "$backup_dir/$name";
+  my $dest = $out_dir . "/" . ($name =~ s/mov$/mp4/igr);
   &encode_to_mp4($src, $dest);
   &fix_created_modified_dates($src, $dest);
-  move($src, $backup);
 }

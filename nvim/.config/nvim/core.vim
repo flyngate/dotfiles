@@ -26,6 +26,9 @@ set expandtab
 set tabstop=2
 set shiftwidth=2
 
+autocmd Filetype cs setlocal tabstop=4
+autocmd Filetype cs setlocal shiftwidth=4
+
 " set up the leader key to Space
 let mapleader = "\<space>"
 
