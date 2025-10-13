@@ -1,0 +1,11 @@
+theme = lovelace
+font-family = JetBrains Mono SemiBold
+macos-titlebar-style = transparent
+window-colorspace = "display-p3"
+background = 121826
+window-padding-x = 8
+window-padding-y = 16,4
+cursor-style = block
+mouse-hide-while-typing = true
+copy-on-select = true
+macos-option-as-alt = true
