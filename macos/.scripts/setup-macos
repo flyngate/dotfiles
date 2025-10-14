@@ -2,24 +2,25 @@
 
 set -e
 
-xcode-select --install
-sudo xcodebuild -license
+chsh -s /bin/zsh
 
-echo "Installing homebrew..." && \
-  /bin/bash -c "$(curl -fssl https://raw.githubusercontent.com/homebrew/install/head/install.sh)"
+if ! command -v brew >/dev/null 2>&1; then
+  echo "Installing homebrew..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
 
-echo "Installing tools..." && \
-  /opt/homebrew/bin/brew install tmux fzf nvim the_silver_searcher ripgrep \
-    fzf htop fd pass zk tealdeer ffmpeg nvm node yarn speedtest-cli && \
-  /opt/homebrew/opt/fzf/install && \
-  source /opt/homebrew/opt/nvm/nvm.sh && \
-  nvm install --lts
+echo "Installing command line tools..."
+/opt/homebrew/bin/brew install tmux fzf nvim the_silver_searcher ripgrep \
+  htop fd pass zk tealdeer ffmpeg nvm node yarn 7-zip rclone
+/opt/homebrew/opt/fzf/install
+source /opt/homebrew/opt/nvm/nvm.sh
+nvm install --lts
 
-echo "Installing casks" && \
-  /opt/homebrew/bin/brew install --cask google-chrome iterm2 telegram-desktop \
-    notion spotify raycast vlc visual-studio-code \
-    transmission
+echo "Installing casks..."
+/opt/homebrew/bin/brew install --cask ghostty telegram-desktop \
+  notion anytype obsidian spotify chatgpt raycast vlc visual-studio-code \
+  cursor transmission localsend
 
-echo "Installing neovim plugins" && \
+echo "Installing neovim plugins..." && \
   # pip3 install neovim && \
   nvim --headless "+Lazy! install" +qa
