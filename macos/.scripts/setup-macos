@@ -11,14 +11,14 @@ fi
 
 echo "Installing command line tools..."
 /opt/homebrew/bin/brew install tmux fzf nvim the_silver_searcher ripgrep \
-  htop fd pass zk tealdeer ffmpeg nvm node yarn 7-zip rclone
+  zoxide htop fd pass zk tealdeer ffmpeg nvm node yarn 7-zip rclone
 /opt/homebrew/opt/fzf/install
 source /opt/homebrew/opt/nvm/nvm.sh
 nvm install --lts
 
 echo "Installing casks..."
 /opt/homebrew/bin/brew install --cask ghostty telegram-desktop \
-  notion anytype obsidian spotify chatgpt raycast vlc visual-studio-code \
+  notion anytype obsidian spotify chatgpt raycast vlc iina visual-studio-code \
   cursor transmission localsend
 
 echo "Installing neovim plugins..." && \

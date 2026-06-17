@@ -11,7 +11,7 @@ CURRENT_DIR = path.dirname(path.realpath(__file__))
 DICT_PATH = path.join(CURRENT_DIR, 'diceware.wordlist.asc')
 DICE = ['1', '2', '3', '4', '5', '6']
 KEY_LEN = 5
-DEFAULT_PASSCODE_LEN = 4
+DEFAULT_PASSCODE_LEN = 6
 
 with open(DICT_PATH) as f:
     lines = f.readlines()

@@ -16,6 +16,11 @@ alias python="python3"
 alias c="docker-compose"
 alias tcd="tmux attach-session -c"
 alias macos-run-any-app="sudo spctl --master-disable"
+alias weather="curl wttr.in"
+
+# function claude() {
+#   safehouse claude --dangerously-skip-permissions "$@";
+# }
 
 function session {
   tmux new-session ${1:+-s$1} ${2:+-c$2}

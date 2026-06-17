@@ -160,8 +160,8 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
     build = ':TSUpdate',
-    main = 'nvim-treesitter.configs',
     opts = {
       enable = true,
       auto_install = true,
@@ -242,7 +242,10 @@ return {
       },
     },
   },
-  { "nvim-treesitter/nvim-treesitter-textobjects" },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = 'main'
+  },
 
   -- colorscheme
   { 'sam4llis/nvim-tundra' },
