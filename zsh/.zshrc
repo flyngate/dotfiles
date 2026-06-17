@@ -1,6 +1,8 @@
+typeset -U PATH path
+
 ### environment variables
 export EDITOR="vim"
-export PATH="$HOME/.local/bin/:$HOME/.scripts:$HOME/code/scripts:/opt/homebrew/bin:/usr/sbin:$PATH"
+export PATH="$HOME/.local/bin/:$HOME/.scripts:$HOME/code/scripts:/usr/sbin:$PATH"
 export LANG=en_US.UTF-8
 # export TERM="screen-256color"
 export TERM="xterm-256color"

@@ -4,9 +4,9 @@
 
 load-nvm() {
   export NVM_DIR="$HOME/.nvm"
-  local NVM_ROOT_DIR="/opt/homebrew/opt/nvm"
+  local NVM_ROOT_DIR="${HOMEBREW_PREFIX:-/opt/homebrew}/opt/nvm"
 
-  [ -s "$NVM_ROOT_DIR/nvm.sh" ] && . "$NVM_ROOT_DIR/nvm.sh"
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
   [ -s "$NVM_ROOT_DIR/etc/bash_completion.d/nvm" ] && . "$NVM_ROOT_DIR/etc/bash_completion.d/nvm"
 
   function load-nvm {}
@@ -28,6 +28,12 @@ npm() {
   unset -f npm
   load-nvm
   npm "$@"
+}
+
+npx() {
+  unset -f npx
+  load-nvm
+  npx "$@"
 }
 
 pnpm() {
