@@ -7,6 +7,8 @@ EOF
 syntax on
 silent! colorscheme tundra
 
+set laststatus=3
+
 " keymap for russion language
 " switch lang with ctrl+^ in insert mode
 set keymap=russian-jcukenwin

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -eu
+
+length=${1:-16}
+
+if ! [[ "$length" =~ ^[0-9]+$ ]] || (( length < 1 )); then
+  echo "Usage: $(basename "$0") [length]" >&2
+  exit 1
+fi
+
+LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c "$length"
+echo

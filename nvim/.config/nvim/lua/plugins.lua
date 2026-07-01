@@ -1,6 +1,4 @@
 return {
-  -- experimental
-  { 'vim-crystal/vim-crystal' },
   {
     'voldikss/vim-floaterm',
     keys = {
@@ -160,7 +158,7 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter',
-    branch = 'main',
+    branch = 'master',
     build = ':TSUpdate',
     opts = {
       enable = true,
@@ -242,14 +240,25 @@ return {
       },
     },
   },
-  {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    branch = 'main'
-  },
+  { "nvim-treesitter/nvim-treesitter-textobjects", branch = 'master' },
 
   -- colorscheme
   { 'sam4llis/nvim-tundra' },
   { 'EdenEast/nightfox.nvim' },
+
+  -- ui
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    opts = {
+      preset = "modern",
+      spec = {
+        { "<leader>h", group = "harpoon" },
+        { "<leader>r", group = "refactor" },
+        { "<leader>a", group = "search" },
+      },
+    },
+  },
 
   -- navigation and search
   {
@@ -300,7 +309,6 @@ return {
           \ "coc-eslint",
           \ "coc-clangd",
           \ "coc-rust-analyzer",
-          \ "coc-sourcekit",
           \ "coc-zig"
         \ ]
 

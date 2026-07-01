@@ -12,7 +12,7 @@
     "markdown",
     "mdx"
   ],
-  "list.source.grep.command": "ag",
+  "list.source.grep.command": "rg",
   "languageserver": {
     "gleam": {
       "command": "gleam",
@@ -29,5 +29,12 @@
   "clangd.fallbackFlags": ["-std=c++20", "-I/opt/homebrew/include"],
   "clangd.arguments": [],
   "svelte.enable-ts-plugin": true,
-  "snippets.ultisnips.pythonPrompt": false
+  "snippets.ultisnips.pythonPrompt": false,
+  "java.imports.gradle.wrapper.checksums": [
+    {
+      "sha256": "497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7",
+      "allowed": true
+    }
+  ],
+  "java.import.gradle.java.home": "/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home"
 }
