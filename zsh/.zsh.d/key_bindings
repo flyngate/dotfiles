@@ -36,6 +36,7 @@ bindkey "^[[1;5C" emacs-forward-word   # ctrl + right
 
 bindkey "^P" up-line-or-search
 bindkey "^N" down-line-or-search
+bindkey "^F" forward-word                # accept one word from autosuggestion
 
 export WORDCHARS=''
 
