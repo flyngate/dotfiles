@@ -13,18 +13,29 @@ function zshrc() {
   ### enable vi mode
   bindkey -v
 
+  ### history
+  HISTFILE=~/.zsh_history
+  HISTSIZE=50000
+  SAVEHIST=50000
+  setopt HIST_IGNORE_ALL_DUPS HIST_FIND_NO_DUPS SHARE_HISTORY INC_APPEND_HISTORY
+
   ### discover platform
-  # platform="unknown"
-  # case $(uname) in
-  #   Darwin)  platform="macos" ;;
-  #   Linux)   platform="linux" ;;
-  #   FreeBSD) platform="freebsd" ;;
-  # esac
+  PLATFORM="unknown"
+
+  case $(uname) in
+    Darwin)  PLATFORM="macos" ;;
+    Linux)   PLATFORM="linux" ;;
+    FreeBSD) PLATFORM="freebsd" ;;
+  esac
 
   ### completion
   fpath=($HOME/.zsh.d/completion $fpath)
-  autoload -U compinit promptinit colors
-  compinit
+  autoload -Uz compinit promptinit colors
+  if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+    compinit
+  else
+    compinit -C
+  fi
   promptinit
   colors
   zstyle ':completion:*' menu select

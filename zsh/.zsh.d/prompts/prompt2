@@ -1,4 +1,3 @@
-
 ### globals
 
 __HELLO_PRE=""
@@ -13,6 +12,7 @@ __BRANCH_POST="%b%f"
 setopt prompt_subst
 
 PROMPT=' $(__prompt_ssh)$__HELLO_PRE$(__prompt_hello)$__HELLO_POST '
+RPROMPT='$(__prompt_cwd)'
 # RPROMPT='$(__prompt_git)'
 
 __prompt_hello() {
@@ -59,18 +59,20 @@ __prompt_cwd() {
     fi
   fi
 
-  echo $curdir
+  echo "$__CWD_PRE$curdir$__CWD_POST"
 }
 
 __prompt_git() {
   local git_prompt=""
+
   if type git >/dev/null 2>&1 && __prompt_is_repository; then
     local branch="$(__prompt_branch_name)"
     local repo="$(__prompt_repository)"
     local dirty="$(__prompt_branch_dirty)"
     git_prompt="$__BRANCH_PRE⇡ $branch$dirty$__BRANCH_POST"
   fi
-  echo "$__CWD_PRE$(__prompt_cwd)$__CWD_POST $git_prompt"
+
+  echo "$(__prompt_cwd) $git_prompt"
 }
 
 __prompt_is_repository() {
