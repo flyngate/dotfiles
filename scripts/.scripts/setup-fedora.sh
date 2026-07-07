@@ -10,7 +10,8 @@ function install_base() {
   sudo dnf upgrade -y
 
   # fuse-libs is needed for AppImage to work correctly
-  sudo dnf install fuse-libs tmux zsh git fzf the_silver_searcher zoxide nodejs rust -y
+  sudo dnf install fuse-libs tmux zsh git delta fzf the_silver_searcher \
+    zoxide pass nodejs rust -y
 }
 
 function install_neovim() {
@@ -67,12 +68,24 @@ function install_docker() {
 function install_agents() {
   echo "Installing agents..."
 
-  if command -v agy &> /dev/null; then
+  if ! command -v agy &> /dev/null; then
+    curl -fsSL https://antigravity.google/cli/install.sh | bash
+    agy plugin install https://github.com/obra/superpowers
+  fi
+
+  if ! command -v opencode &> /dev/null; then
+    curl -fsSL https://opencode.ai/install | bash
+  fi
+}
+
+function install_tailscale() {
+  echo "Installing tailscale..."
+
+  if command -v tailscale &> /dev/null; then
     return
   fi
 
-  curl -fsSL https://antigravity.google/cli/install.sh | bash
-  agy plugin install https://github.com/obra/superpowers
+  curl -fsSL https://tailscale.com/install.sh | sh
 }
 
 function setup_shell() {
@@ -85,16 +98,6 @@ function setup_shell() {
     sudo chsh -s "$target_shell" "$USER"
     reboot_is_needed=true
   fi
-}
-
-function setup_tailscale() {
-  echo "Installing tailscale..."
-
-  if command -v tailscale &> /dev/null; then
-    return
-  fi
-
-  curl -fsSL https://tailscale.com/install.sh | sh
 }
 
 install_base
