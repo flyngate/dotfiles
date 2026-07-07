@@ -152,13 +152,20 @@ return {
   { 'tpope/vim-surround' },
   { 'tpope/vim-unimpaired' },
   { 'tpope/vim-commentary' },
+  {
+    'AndrewRadev/sideways.vim',
+    keys = {
+      { '[s', '<cmd>SidewaysLeft<cr>' },
+      { ']s', '<cmd>SidewaysRight<cr>' },
+    },
+  },
   { 
     'Julian/vim-textobj-variable-segment',
     dependencies = { 'kana/vim-textobj-user'},
   },
   {
     'nvim-treesitter/nvim-treesitter',
-    branch = 'master',
+    branch = 'main',
     build = ':TSUpdate',
     opts = {
       enable = true,
@@ -194,53 +201,21 @@ return {
           node_incremental = "<m-o>",
         },
       },
-
-      textobjects = {
-        move = {
-          enable = true,
-          set_jumps = true,
-          goto_next_start = {
-            ["]m"] = "@function.outer",
-          },
-          goto_next_end = {
-            ["]M"] = "@function.outer",
-          },
-          goto_previous_start = {
-            ["[m"] = "@function.outer",
-          },
-          goto_previous_end = {
-            ["[M"] = "@function.outer",
-          },
-        },
-
-        select = {
-          enable = true,
-          lookahead = true,
-          keymaps = {
-            -- You can use the capture groups defined in textobjects.scm
-            ["af"] = "@function.outer",
-            ["if"] = "@function.inner",
-            ["ac"] = "@class.outer",
-            -- You can optionally set descriptions to the mappings (used in the desc parameter of
-            -- nvim_buf_set_keymap) which plugins like which-key display
-            ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-          },
-
-          selection_modes = {
-            ['@function.outer'] = 'V',
-            ['@class.outer'] = 'V',
-          },
-        },
-
-        swap = {
-          enable = true,
-          swap_next = { ["]s"] = "@parameter.inner" },
-          swap_previous = { ["[s"] = "@parameter.inner" },
-        },
-      },
     },
   },
-  { "nvim-treesitter/nvim-treesitter-textobjects", branch = 'master' },
+  {
+    'echasnovski/mini.ai',
+    event = "VeryLazy",
+    config = function()
+      local ai = require('mini.ai')
+      ai.setup({
+        custom_textobjects = {
+          f = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
+          c = ai.gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }),
+        },
+      })
+    end,
+  },
 
   -- colorscheme
   { 'sam4llis/nvim-tundra' },
