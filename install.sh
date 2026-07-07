@@ -5,7 +5,7 @@ set -e
 repo=https://github.com/flyngate/dotfiles
 default_recipe="default.recipe"
 
-current_dir=$(cd $(dirname $BASH_SOURCE[0]); pwd)
+current_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")"; pwd)
 home_dir=$HOME
 backup_dir="$home_dir/.dotfiles_backup"
 
@@ -54,11 +54,12 @@ array_contains() {
 
 # symlink or copy a package into home directory
 install() {
-  IFS=$'\n'
+  local IFS=$'\n'
 
   local package="$1"
   local package_path="$current_dir/$package"
-  local files=$(cd "$package_path"; find .)
+  local files
+  files=$(cd "$package_path"; find .)
 
   for file in $files; do
     file="${file:2}"
@@ -66,7 +67,8 @@ install() {
 
     local src="$current_dir/$package/$file"
     local dst="$home_dir/$file"
-    local backup=$(dirname "$backup_dir/$file")
+    local backup
+    backup=$(dirname "$backup_dir/$file")
 
     if [[ -d "$src" ]]; then
       verbose "  mkdir $dst"
@@ -82,7 +84,7 @@ install() {
           rm "$dst"
         fi
       elif [[ -f "$dst" ]]; then
-        verbose "  backup $(basename file) into $backup"
+        verbose "  backup $(basename "$file") into $backup"
 
         if [[ "$flag_dry" == false ]]; then
           mkdir -p "$backup"
@@ -105,8 +107,6 @@ install() {
       fi
     fi
   done
-
-  unset IFS
 }
 
 add_package() {
@@ -115,7 +115,7 @@ add_package() {
 
   if ! array_contains "$package" "${packages[@]}"; then
     if [[ -e "$package_path" ]]; then
-      packages+=($package)
+      packages+=("$package")
     else
       abort "Package \"$package\" doesn't exist"
     fi
@@ -127,7 +127,7 @@ add_recipe() {
   local recipe_path="$current_dir/$1"
 
   if [[ -e "$recipe_path" ]]; then
-    recipe_packages=($(source $recipe_path; echo ${PACKAGES[@]}))
+    recipe_packages=($(source "$recipe_path"; echo "${PACKAGES[@]}"))
     for recipe_package in "${recipe_packages[@]}"; do
       add_package "$recipe_package"
     done
@@ -146,7 +146,7 @@ remote() {
   fi
 
   tmp_dir=$(mktemp -d)
-  trap "print_info Cleanup; rm -rf $tmp_dir" EXIT SIGINT SIGTERM
+  trap "print_info Cleanup; rm -rf $tmp_dir" EXIT
 
   print_info "Fetch repository into $tmp_dir..."
   $fetch "$repo/tarball/master" | tar -xzv -C $tmp_dir --strip-components=1 > /dev/null
@@ -203,7 +203,7 @@ if [[ "$flag_dry" == true ]]; then
   print_warn "Dry-run mode is enabled"
 fi
 
-for package in ${packages[@]}; do
+for package in "${packages[@]}"; do
   print_info "$([[ "$flag_copy" == true ]] && echo "Copy" || echo "Symlink") $package"
   install $package $flag_copy
 done
