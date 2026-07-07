@@ -1,4 +1,5 @@
 [core]
+  pager = delta --diff-so-fancy
   excludesfile = ~/.gitignore.global
 
 [user]
@@ -41,12 +42,8 @@
 [pull]
   rebase = true
 
-[pager]
-  diff = ~/.gitconfig.d/diff-so-fancy/diff-so-fancy | less --tabs=4 -RFX
-  show = ~/.gitconfig.d/diff-so-fancy/diff-so-fancy | less --tabs=4 -RFX
-
-; [interactive]
-;   diffFilter = "~/.gitconfig.d/diff-so-fancy/diff-so-fancy"
+[interactive]
+  diffFilter = delta --color-only
 
 [include]
   path = ~/.gitconfig.local
@@ -56,3 +53,15 @@
 
 [init]
 	defaultBranch = main
+
+[merge]
+  conflictStyle = zdiff3
+
+[delta]
+    navigate = true  # use n and N to move between diff sections
+    dark = true      # or light = true, or omit for auto-detection
+    line-numbers = true
+    file-decoration-style = 
+    hunk-header-style = line-number syntax
+    hunk-label =
+    hunk-header-decoration-style =
