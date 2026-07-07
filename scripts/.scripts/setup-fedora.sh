@@ -87,12 +87,23 @@ function setup_shell() {
   fi
 }
 
+function setup_tailscale() {
+  echo "Installing tailscale..."
+
+  if command -v tailscale &> /dev/null; then
+    return
+  fi
+
+  curl -fsSL https://tailscale.com/install.sh | sh
+}
+
 install_base
 install_neovim
 install_snap
 install_gui
 install_docker
 install_agents
+install_tailscale
 setup_shell
 
 if [ "$reboot_is_needed" = true ]; then
