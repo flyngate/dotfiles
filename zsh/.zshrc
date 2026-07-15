@@ -60,7 +60,7 @@ function zshrc() {
 
   ### plugins
   source "$HOME/.zsh.d/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
-  bindkey "^Y" autosuggest-accept          # ctrl+y: accept full suggestion
+  bindkey "^O" autosuggest-accept          # ctrl+o: accept full suggestion
   source "$HOME/.zsh.d/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
   source "$HOME/.zsh.d/plugins/zsh-nvm-lazy-load.plugin.zsh"
 
