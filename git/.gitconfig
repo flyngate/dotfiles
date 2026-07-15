@@ -1,5 +1,5 @@
 [core]
-  pager = delta --diff-so-fancy
+  pager = command -v delta >/dev/null 2>&1 && delta --diff-so-fancy || less
   excludesfile = ~/.gitignore.global
 
 [user]
@@ -43,7 +43,7 @@
   rebase = true
 
 [interactive]
-  diffFilter = delta --color-only
+  diffFilter = command -v delta >/dev/null 2>&1 && delta --color-only || cat
 
 [include]
   path = ~/.gitconfig.local
