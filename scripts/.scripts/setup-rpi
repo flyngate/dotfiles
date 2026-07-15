@@ -1,11 +1,22 @@
 #!/bin/bash
-
 # configuration scripts for raspberry pi os based on debian 12 bookworm
 
 set -e
 
 USAGE="Usage: setup-rpi [essentials|all|file-server]"
 FIRMWARE_CONFIG="/boot/firmware/config.txt"
+
+function setup_shell() {
+  echo "Setting up shell..."
+
+  local target_shell
+  target_shell=$(which zsh)
+
+  if [ "$SHELL" != "$target_shell" ]; then
+    sudo chsh -s "$target_shell" "$USER"
+    # reboot_is_needed=true
+  fi
+}
 
 function setup_essentials() {
   # increase soft temperature limit to avoid CPU throttling on Raspberry PI 3B+
@@ -27,6 +38,8 @@ function setup_essentials() {
   sudo sh -c 'echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen'
   sudo sh -c 'echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen'
   sudo locale-gen
+
+  setup_shell
 }
 
 function install_neovim() {
@@ -42,7 +55,7 @@ function install_neovim() {
 }
 
 function install_node() {
-  curl -fsSL https://deb.nodesource.com/setup_22.x -o /tmp/nodesource-setup.sh
+  curl -fsSL https://deb.nodesource.com/setup_26.x -o /tmp/nodesource-setup.sh
   sudo bash /tmp/nodesource-setup.sh
   rm /tmp/nodesource-setup.sh
   sudo apt-get install -y nodejs
