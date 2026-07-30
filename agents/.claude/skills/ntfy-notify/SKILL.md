@@ -13,11 +13,13 @@ Send a push notification to the user's ntfy topic.
 
 ## How to Send
 
-Compose a clear, concise message from the context of what the user asked to be notified about, then run:
+Set the title to the current tool name (opencode, Claude Code, Codex, etc.) based on context. For example, use `Title: opencode` when running in opencode.
+
+Then compose a clear, concise message from the context of what the user asked to be notified about and run:
 
 ```bash
 curl -s \
-  -H "Title: Claude Code" \
+  -H "Title: opencode" \
   -d "YOUR MESSAGE HERE" \
   https://ntfy.sh/agents_42b81lsjfehya0jl
 ```
@@ -36,7 +38,7 @@ User says: "notify me when the build finishes"
 
 ```bash
 curl -s \
-  -H "Title: Claude Code" \
+  -H "Title: opencode" \
   -H "Tags: white_check_mark" \
   -d "Build finished successfully." \
   https://ntfy.sh/agents_42b81lsjfehya0jl
