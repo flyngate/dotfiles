@@ -1,27 +1,72 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
-chsh -s /bin/zsh
+reboot_is_needed=false
 
-if ! command -v brew >/dev/null 2>&1; then
-  echo "Installing homebrew..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-fi
+function install_homebrew() {
+  if ! command -v brew &> /dev/null; then
+    echo "Installing homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  fi
+}
 
-echo "Installing command line tools..."
-/opt/homebrew/bin/brew install tmux fzf nvim the_silver_searcher ripgrep \
-  zoxide htop fd pass zk tealdeer ffmpeg nvm node yarn 7-zip rclone delta \
-  copyparty
-/opt/homebrew/opt/fzf/install
-source /opt/homebrew/opt/nvm/nvm.sh
-nvm install --lts
+function install_cli() {
+  echo "Installing CLI tools..."
+  brew install tmux fzf nvim the_silver_searcher ripgrep \
+    zoxide htop fd pass zk tealdeer ffmpeg nvm node yarn 7-zip rclone delta \
+    copyparty
+  $(brew --prefix fzf)/install
 
-echo "Installing casks..."
-/opt/homebrew/bin/brew install --cask ghostty telegram-desktop \
-  notion obsidian spotify chatgpt raycast vlc iina visual-studio-code \
-  transmission localsend
+  source $(brew --prefix nvm)/nvm.sh
+  nvm install --lts
+}
 
-echo "Installing neovim plugins..." && \
-  # pip3 install neovim && \
+function install_agents() {
+  echo "Installing agents..."
+
+  if ! command -v claude &> /dev/null; then
+    brew install --cask claude-code
+  fi
+
+  if ! command -v opencode &> /dev/null; then
+    brew install anomalyco/tap/opencode
+  fi
+}
+
+function install_gui() {
+  echo "Installing GUI apps..."
+  brew install --cask ghostty telegram-desktop \
+    notion obsidian spotify chatgpt raycast vlc iina visual-studio-code \
+    transmission localsend
+}
+
+function setup_shell() {
+  echo "Setting up shell..."
+  if [ "$SHELL" != "/bin/zsh" ]; then
+    chsh -s /bin/zsh
+    reboot_is_needed=true
+  fi
+}
+
+function setup_neovim() {
+  echo "Setting up neovim plugins..."
   nvim --headless "+Lazy! install" +qa
+}
+
+install_homebrew
+install_cli
+install_agents
+install_gui
+setup_shell
+setup_neovim
+
+if [ "$reboot_is_needed" = true ]; then
+  echo "--------------------------------------------------------"
+  echo "Shell change requires logging out and back in."
+  echo "--------------------------------------------------------"
+  read -p "Would you like to restart Terminal/iTerm now? [y/N]: " -r response
+  if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    osascript -e 'tell application "Terminal" to quit'
+  fi
+fi
