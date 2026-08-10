@@ -23,13 +23,14 @@ function install_cli() {
 }
 
 function install_agents() {
-  echo "Installing agents..."
 
   if ! command -v claude &> /dev/null; then
+    echo "Installing Claude Code..."
     brew install --cask claude-code
   fi
 
   if ! command -v opencode &> /dev/null; then
+    echo "Installing opencode..."
     brew install anomalyco/tap/opencode
   fi
 }
@@ -42,8 +43,8 @@ function install_gui() {
 }
 
 function setup_shell() {
-  echo "Setting up shell..."
   if [ "$SHELL" != "/bin/zsh" ]; then
+    echo "Setting up shell..."
     chsh -s /bin/zsh
     reboot_is_needed=true
   fi
@@ -65,8 +66,4 @@ if [ "$reboot_is_needed" = true ]; then
   echo "--------------------------------------------------------"
   echo "Shell change requires logging out and back in."
   echo "--------------------------------------------------------"
-  read -p "Would you like to restart Terminal/iTerm now? [y/N]: " -r response
-  if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    osascript -e 'tell application "Terminal" to quit'
-  fi
 fi
