@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -euo pipefail
+
+SOURCE="$HOME/Documents/notes"
+DEST="$HOME/Library/Mobile Documents/com~apple~CloudDocs/backups"
+HOSTNAME=$(hostname -s)
+DATE=$(date +%Y-%m-%d)
+ARCHIVE_NAME="${DATE}-${HOSTNAME}-notes-backup.zip"
+TEMP_ARCHIVE="/tmp/notes-backup.$$.zip"
+
+cleanup() {
+    rm -f "$TEMP_ARCHIVE"
+}
+trap cleanup EXIT
+
+if [ ! -d "$SOURCE" ]; then
+    echo "Error: Source directory $SOURCE does not exist." >&2
+    exit 1
+fi
+
+if [ ! -d "$DEST" ]; then
+    echo "Error: Destination $DEST does not exist (iCloud not mounted?)." >&2
+    exit 1
+fi
+
+echo "Compressing $SOURCE..."
+(cd "$SOURCE" && zip -r "$TEMP_ARCHIVE" . -x "*.DS_Store") 2>&1
+
+echo "Copying to iCloud..."
+cp -p "$TEMP_ARCHIVE" "$DEST/$ARCHIVE_NAME"
+
+echo "Backup complete: $DEST/$ARCHIVE_NAME"
