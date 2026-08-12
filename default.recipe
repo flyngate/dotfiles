@@ -1,1 +1,1 @@
-PACKAGES=(agents scripts zsh nvim vim git tmux)
+PACKAGES=(agents scripts zsh nvim vim git tmux ghostty)
