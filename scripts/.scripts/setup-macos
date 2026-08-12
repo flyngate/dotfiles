@@ -16,14 +16,15 @@ function install_cli() {
   brew install tmux fzf nvim the_silver_searcher ripgrep \
     zoxide htop fd pass zk tealdeer ffmpeg nvm node yarn 7-zip rclone delta \
     copyparty
-  $(brew --prefix fzf)/install
 
-  source $(brew --prefix nvm)/nvm.sh
+  /opt/homebrew/opt/fzf/install
+
+  export NVM_DIR="$HOME/.nvm"
+  source /opt/homebrew/opt/nvm/nvm.sh
   nvm install --lts
 }
 
 function install_agents() {
-
   if ! command -v claude &> /dev/null; then
     echo "Installing Claude Code..."
     brew install --cask claude-code
@@ -39,7 +40,7 @@ function install_gui() {
   echo "Installing GUI apps..."
   brew install --cask ghostty telegram-desktop \
     notion obsidian spotify chatgpt raycast vlc iina visual-studio-code \
-    transmission localsend
+    transmission localsend steam google-chrome
 }
 
 function setup_shell() {
