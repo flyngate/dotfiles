@@ -76,6 +76,9 @@ function zshrc() {
   ### fzf
   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+  ### pass
+  export PASSWORD_STORE_GIT_PUSH=true
+
   ### zk
   export ZK_NOTEBOOK_DIR="$HOME/Documents/notes/zk"
 }
